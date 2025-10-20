@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react'
-import { MessageCircleMore,  Terminal, User, Home, Mail, Code, Briefcase, GraduationCap, Github, X, ArrowLeft, Instagram, Facebook } from 'lucide-react'
+import { MessageCircleMore,  Terminal, User, Home, Mail, Code, Briefcase, GraduationCap, Github, ArrowLeft, Instagram, Facebook, ExternalLink, Copy, Check, Minimize2, Maximize2 } from 'lucide-react'
 import { useMediaQuery } from 'react-responsive';
 const sections = {
   home: {
@@ -87,30 +87,122 @@ const sections = {
     icon: <Terminal className="w-5 h-5" />,
     content: (
       <div className="space-y-6">
-        <h3 className="text-2xl font-semibold mb-3 text-green-400">Skills</h3>
-        <div className="grid grid-cols-3 gap-4">
-          {[
-            { name: 'Python', icon: '🐍' },
-            { name: 'JavaScript', icon: '🌐' },
-            { name: 'React', icon: '⚛️' },
-            { name: 'CSS', icon: '🎨' },
-            { name: 'HTML', icon: '📄' },
-            { name: 'Next.js', icon: '▲' },
-            { name: 'C++', icon: '🖥️' },
-            { name: 'Video Editing', icon: '🎬' },
-            { name: 'Burp Suite', icon: '🐞' },
-            { name: 'Wireshark', icon: '🦈' },
-            { name: 'Metasploit', icon: '🛠️' },
-            { name: 'Nmap', icon: '🗺️' },
-          ].map((skill) => (
-            <button
-              key={skill.name}
-              className="p-2 bg-gray-700 rounded hover:bg-gray-600 transition-colors flex items-center justify-center"
-              onClick={() => document.dispatchEvent(new CustomEvent('showSkill', { detail: skill.name }))}
-            >
-              <span className="mr-2">{skill.icon}</span> {skill.name}
-            </button>
-          ))}
+        <h3 className="text-2xl font-semibold mb-3 text-green-400">Technical Skills</h3>
+        <div className="space-y-6">
+          <div>
+            <h4 className="text-lg font-semibold mb-3 text-green-300">Programming Languages</h4>
+            <div className="grid grid-cols-2 gap-3">
+              {[
+                { name: 'Python', icon: '🐍', level: 90 },
+                { name: 'JavaScript', icon: '🌐', level: 85 },
+                { name: 'C++', icon: '🖥️', level: 75 },
+                { name: 'HTML/CSS', icon: '🎨', level: 95 },
+              ].map((skill) => (
+                <button
+                  key={skill.name}
+                  className="p-3 bg-gray-700 rounded-lg hover:bg-gray-600 transition-all duration-300 border border-gray-600 hover:border-green-500 group"
+                  onClick={() => document.dispatchEvent(new CustomEvent('showSkill', { detail: skill.name }))}
+                >
+                  <div className="flex items-center justify-between mb-2">
+                    <div className="flex items-center">
+                      <span className="mr-2 text-xl">{skill.icon}</span>
+                      <span className="font-semibold">{skill.name}</span>
+                    </div>
+                    <span className="text-xs text-green-400">{skill.level}%</span>
+                  </div>
+                  <div className="w-full bg-gray-800 rounded-full h-1.5">
+                    <div
+                      className="bg-gradient-to-r from-green-500 to-green-400 h-1.5 rounded-full transition-all duration-300 group-hover:from-green-400 group-hover:to-green-300"
+                      style={{ width: `${skill.level}%` }}
+                    />
+                  </div>
+                </button>
+              ))}
+            </div>
+          </div>
+          <div>
+            <h4 className="text-lg font-semibold mb-3 text-green-300">Frameworks & Libraries</h4>
+            <div className="grid grid-cols-2 gap-3">
+              {[
+                { name: 'React', icon: '⚛️', level: 88 },
+                { name: 'Next.js', icon: '▲', level: 80 },
+              ].map((skill) => (
+                <button
+                  key={skill.name}
+                  className="p-3 bg-gray-700 rounded-lg hover:bg-gray-600 transition-all duration-300 border border-gray-600 hover:border-green-500 group"
+                  onClick={() => document.dispatchEvent(new CustomEvent('showSkill', { detail: skill.name }))}
+                >
+                  <div className="flex items-center justify-between mb-2">
+                    <div className="flex items-center">
+                      <span className="mr-2 text-xl">{skill.icon}</span>
+                      <span className="font-semibold">{skill.name}</span>
+                    </div>
+                    <span className="text-xs text-green-400">{skill.level}%</span>
+                  </div>
+                  <div className="w-full bg-gray-800 rounded-full h-1.5">
+                    <div
+                      className="bg-gradient-to-r from-green-500 to-green-400 h-1.5 rounded-full transition-all duration-300 group-hover:from-green-400 group-hover:to-green-300"
+                      style={{ width: `${skill.level}%` }}
+                    />
+                  </div>
+                </button>
+              ))}
+            </div>
+          </div>
+          <div>
+            <h4 className="text-lg font-semibold mb-3 text-green-300">Security & Tools</h4>
+            <div className="grid grid-cols-2 gap-3">
+              {[
+                { name: 'Burp Suite', icon: '🐞', level: 70 },
+                { name: 'Wireshark', icon: '🦈', level: 75 },
+                { name: 'Metasploit', icon: '🛠️', level: 65 },
+                { name: 'Nmap', icon: '🗺️', level: 80 },
+              ].map((skill) => (
+                <button
+                  key={skill.name}
+                  className="p-3 bg-gray-700 rounded-lg hover:bg-gray-600 transition-all duration-300 border border-gray-600 hover:border-green-500 group"
+                  onClick={() => document.dispatchEvent(new CustomEvent('showSkill', { detail: skill.name }))}
+                >
+                  <div className="flex items-center justify-between mb-2">
+                    <div className="flex items-center">
+                      <span className="mr-2 text-xl">{skill.icon}</span>
+                      <span className="font-semibold">{skill.name}</span>
+                    </div>
+                    <span className="text-xs text-green-400">{skill.level}%</span>
+                  </div>
+                  <div className="w-full bg-gray-800 rounded-full h-1.5">
+                    <div
+                      className="bg-gradient-to-r from-green-500 to-green-400 h-1.5 rounded-full transition-all duration-300 group-hover:from-green-400 group-hover:to-green-300"
+                      style={{ width: `${skill.level}%` }}
+                    />
+                  </div>
+                </button>
+              ))}
+            </div>
+          </div>
+          <div>
+            <h4 className="text-lg font-semibold mb-3 text-green-300">Other Skills</h4>
+            <div className="flex gap-3">
+              <button
+                className="p-3 bg-gray-700 rounded-lg hover:bg-gray-600 transition-all duration-300 border border-gray-600 hover:border-green-500 group flex-1"
+                onClick={() => document.dispatchEvent(new CustomEvent('showSkill', { detail: 'Video Editing' }))}
+              >
+                <div className="flex items-center justify-between mb-2">
+                  <div className="flex items-center">
+                    <span className="mr-2 text-xl">🎬</span>
+                    <span className="font-semibold">Video Editing</span>
+                  </div>
+                  <span className="text-xs text-green-400">85%</span>
+                </div>
+                <div className="w-full bg-gray-800 rounded-full h-1.5">
+                  <div
+                    className="bg-gradient-to-r from-green-500 to-green-400 h-1.5 rounded-full transition-all duration-300 group-hover:from-green-400 group-hover:to-green-300"
+                    style={{ width: '85%' }}
+                  />
+                </div>
+              </button>
+            </div>
+          </div>
         </div>
       </div>
     )
@@ -119,90 +211,215 @@ const sections = {
     command: "cat ~/contact.txt",
     icon: <Mail className="w-5 h-5" />,
     content: (
-      <div className="space-y-4">
-        <h3 className="text-2xl font-semibold mb-3 text-green-400">Contact Information</h3>
-        <ul className="space-y-3">
-          <li className="flex items-center">
-            <Mail className="w-6 h-6 mr-3 text-green-400" /> proxjodd@gmail.com
-          </li>
-          <li className="flex items-center">
-            <Github className="w-6 h-6 mr-3 text-green-400" /> github.com/PROX-GOD
-          </li>
-          <li className="flex items-center">
-            <Instagram className="w-6 h-6 mr-3 text-green-400" /> instagram.com/preshakdjodd
-          </li>
-          <li className="flex items-center">
-            <Facebook className="w-6 h-6 mr-3 text-green-400" /> facebook.com/PreshakBhattarai
-          </li>
-          <li className="flex items-center">
-            <MessageCircleMore className="w-6 h-6 mr-3 text-green-400" /> Koi Bhi Project Kr lunga Paise mill gaye toh warna bhadd mein jao
-          </li>
-        </ul>
+      <div className="space-y-6">
+        <h3 className="text-2xl font-semibold mb-4 text-green-400">Get In Touch</h3>
+        <div className="grid gap-3">
+          <a
+            href="mailto:proxjodd@gmail.com"
+            className="flex items-center justify-between p-4 bg-gray-700 rounded-lg hover:bg-gray-600 transition-all duration-300 border border-gray-600 hover:border-green-500 group"
+          >
+            <div className="flex items-center">
+              <div className="p-2 bg-gray-800 rounded-lg mr-3 group-hover:bg-gray-900 transition-colors">
+                <Mail className="w-5 h-5 text-green-400" />
+              </div>
+              <div>
+                <div className="text-xs text-gray-400">Email</div>
+                <div className="font-semibold">proxjodd@gmail.com</div>
+              </div>
+            </div>
+            <ExternalLink className="w-4 h-4 text-gray-400 group-hover:text-green-400 transition-colors" />
+          </a>
+          <a
+            href="https://github.com/PROX-GOD"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center justify-between p-4 bg-gray-700 rounded-lg hover:bg-gray-600 transition-all duration-300 border border-gray-600 hover:border-green-500 group"
+          >
+            <div className="flex items-center">
+              <div className="p-2 bg-gray-800 rounded-lg mr-3 group-hover:bg-gray-900 transition-colors">
+                <Github className="w-5 h-5 text-green-400" />
+              </div>
+              <div>
+                <div className="text-xs text-gray-400">GitHub</div>
+                <div className="font-semibold">github.com/PROX-GOD</div>
+              </div>
+            </div>
+            <ExternalLink className="w-4 h-4 text-gray-400 group-hover:text-green-400 transition-colors" />
+          </a>
+          <a
+            href="https://instagram.com/preshakdjodd"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center justify-between p-4 bg-gray-700 rounded-lg hover:bg-gray-600 transition-all duration-300 border border-gray-600 hover:border-green-500 group"
+          >
+            <div className="flex items-center">
+              <div className="p-2 bg-gray-800 rounded-lg mr-3 group-hover:bg-gray-900 transition-colors">
+                <Instagram className="w-5 h-5 text-green-400" />
+              </div>
+              <div>
+                <div className="text-xs text-gray-400">Instagram</div>
+                <div className="font-semibold">@preshakdjodd</div>
+              </div>
+            </div>
+            <ExternalLink className="w-4 h-4 text-gray-400 group-hover:text-green-400 transition-colors" />
+          </a>
+          <a
+            href="https://facebook.com/PreshakBhattarai"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center justify-between p-4 bg-gray-700 rounded-lg hover:bg-gray-600 transition-all duration-300 border border-gray-600 hover:border-green-500 group"
+          >
+            <div className="flex items-center">
+              <div className="p-2 bg-gray-800 rounded-lg mr-3 group-hover:bg-gray-900 transition-colors">
+                <Facebook className="w-5 h-5 text-green-400" />
+              </div>
+              <div>
+                <div className="text-xs text-gray-400">Facebook</div>
+                <div className="font-semibold">PreshakBhattarai</div>
+              </div>
+            </div>
+            <ExternalLink className="w-4 h-4 text-gray-400 group-hover:text-green-400 transition-colors" />
+          </a>
+        </div>
+        <div className="mt-6 p-4 bg-gray-700 rounded-lg border border-gray-600">
+          <div className="flex items-start">
+            <MessageCircleMore className="w-5 h-5 text-green-400 mr-3 mt-1 flex-shrink-0" />
+            <div>
+              <div className="text-sm font-semibold mb-1 text-green-300">Available for Projects</div>
+              <div className="text-sm text-gray-300">Open to freelance opportunities and collaborations. Let's build something amazing together!</div>
+            </div>
+          </div>
+        </div>
       </div>
     )
   }
 }
 
-const skillExamples = {
-  Python: `def hello_world():
-    print("Hello, World!")
+const skillExamples: Record<string, string> = {
+  Python: `def fibonacci(n):
+    if n <= 1:
+        return n
+    return fibonacci(n-1) + fibonacci(n-2)
 
-hello_world()`,
-  JavaScript: `function helloWorld() {
-  console.log("Hello, World!");
-}
+for i in range(10):
+    print(fibonacci(i), end=" ")`,
+  JavaScript: `const quickSort = (arr) => {
+  if (arr.length <= 1) return arr;
+  const pivot = arr[arr.length - 1];
+  const left = arr.filter((x, i) => x <= pivot && i < arr.length - 1);
+  const right = arr.filter(x => x > pivot);
+  return [...quickSort(left), pivot, ...quickSort(right)];
+};`,
+  React: `import { useState, useEffect } from 'react';
 
-helloWorld();`,
-  React: `function HelloWorld() {
-  return <h1>Hello, World!</h1>;
-}
+function Counter() {
+  const [count, setCount] = useState(0);
 
-export default HelloWorld;`,
-  CSS: `body {
-  font-family: Arial, sans-serif;
-  background-color: #f0f0f0;
-}
+  useEffect(() => {
+    document.title = \`Count: \${count}\`;
+  }, [count]);
 
-h1 {
-  color: #333;
-  text-align: center;
+  return (
+    <button onClick={() => setCount(count + 1)}>
+      Clicked {count} times
+    </button>
+  );
 }`,
-  HTML: `<!DOCTYPE html>
-<html lang="en">
+  'HTML/CSS': `<!DOCTYPE html>
+<html>
 <head>
-  <meta charset="UTF-8">
-  <title>Hello, World!</title>
+  <style>
+    .card {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+    }
+  </style>
 </head>
 <body>
-  <h1>Hello, World!</h1>
+  <div class="card">Beautiful Card</div>
 </body>
 </html>`,
-  'Next.js': `export default function Home() {
-  return <h1>Hello, World!</h1>
+  'Next.js': `import { useState } from 'react';
+
+export default function Home() {
+  const [data, setData] = useState(null);
+
+  const fetchData = async () => {
+    const res = await fetch('/api/data');
+    const json = await res.json();
+    setData(json);
+  };
+
+  return <button onClick={fetchData}>Fetch Data</button>;
 }`,
   'C++': `#include <iostream>
+#include <vector>
+using namespace std;
 
-int main() {
-    std::cout << "Hello, World!" << std::endl;
-    return 0;
+int binarySearch(vector<int>& arr, int target) {
+    int left = 0, right = arr.size() - 1;
+    while (left <= right) {
+        int mid = left + (right - left) / 2;
+        if (arr[mid] == target) return mid;
+        if (arr[mid] < target) left = mid + 1;
+        else right = mid - 1;
+    }
+    return -1;
 }`,
-  'Video Editing': 'I am khatra Capcut User🤣',
-  'Burp Suite': 'Hmm, Yeh bhi aata hein Mujhe',
-  'Wireshark': 'Yeh bhi thoda thoda kr leta hu',
-  'Metasploit': 'Sirf kam chalau aata hein',
-  'Nmap': 'Yeh Cool banne ke liye hein pls ignore.'
+  'Video Editing': `Professional video editing using CapCut:
+- Color grading & correction
+- Smooth transitions & effects
+- Audio mixing & synchronization
+- Motion graphics & animations
+- Multi-layer compositing`,
+  'Burp Suite': `Web Application Security Testing:
+- Intercepting & modifying HTTP requests
+- SQL injection detection
+- XSS vulnerability scanning
+- Session token analysis
+- API security testing`,
+  'Wireshark': `Network Protocol Analysis:
+- Packet capture & inspection
+- Traffic flow analysis
+- Protocol debugging
+- Network troubleshooting
+- Security monitoring`,
+  'Metasploit': `Penetration Testing Framework:
+- Exploit development & testing
+- Vulnerability assessment
+- Payload generation
+- Post-exploitation modules
+- Security auditing`,
+  'Nmap': `Network Discovery & Scanning:
+- Port scanning & enumeration
+- Service version detection
+- OS fingerprinting
+- Network mapping
+- Vulnerability detection scripts`
 }
 
 export default function Component() {
   const [currentSection, setCurrentSection] = useState<keyof typeof sections>("home")
   const [command, setCommand] = useState("")
   const [skillExample, setSkillExample] = useState("")
+  const [isMaximized, setIsMaximized] = useState(false)
+  const [copied, setCopied] = useState(false)
   const terminalRef = useRef<HTMLDivElement>(null)
   const isMobile = useMediaQuery({ query: '(max-width: 768px)' });
   const handleSectionChange = (section: keyof typeof sections) => {
     setCurrentSection(section)
     setCommand(sections[section].command)
     setSkillExample("")
+  }
+
+  const handleCopy = () => {
+    if (skillExample) {
+      navigator.clipboard.writeText(skillExample)
+      setCopied(true)
+      setTimeout(() => setCopied(false), 2000)
+    }
   }
 
   useEffect(() => {
@@ -232,29 +449,65 @@ export default function Component() {
   }, [command, currentSection, skillExample])
 
   return (
-    <div className="min-h-screen bg-gray-900 text-green-300 p-8 font-mono flex flex-col items-center justify-center">
-      <div className="w-full max-w-4xl bg-gray-800 rounded-lg overflow-hidden shadow-2xl mb-8">
-        <div className="flex justify-between items-center p-3 bg-gray-700 border-b border-gray-600">
+    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 text-green-300 p-8 font-mono flex flex-col items-center justify-center">
+      <div className={`w-full bg-gray-800 rounded-lg overflow-hidden shadow-2xl mb-8 transition-all duration-300 ${
+        isMaximized ? 'max-w-7xl' : 'max-w-4xl'
+      }`}>
+        <div className="flex justify-between items-center p-3 bg-gradient-to-r from-gray-700 to-gray-600 border-b border-gray-600">
           <div className="flex space-x-2">
-            <div className="w-3 h-3 rounded-full bg-red-500" />
-            <div className="w-3 h-3 rounded-full bg-yellow-500" />
+            <button
+              className="w-3 h-3 rounded-full bg-red-500 hover:bg-red-400 transition-colors cursor-pointer"
+              onClick={() => window.location.reload()}
+            />
+            <button
+              className="w-3 h-3 rounded-full bg-yellow-500 hover:bg-yellow-400 transition-colors cursor-pointer"
+              onClick={() => setIsMaximized(!isMaximized)}
+            />
             <div className="w-3 h-3 rounded-full bg-green-500" />
           </div>
-          <div className="text-sm text-gray-300">Preshak's Terminal</div>
-          <X className="w-4 h-4 text-gray-300" />
+          <div className="flex items-center space-x-2">
+            <Terminal className="w-4 h-4 text-green-400" />
+            <div className="text-sm text-gray-300 font-semibold">Preshak's Terminal</div>
+          </div>
+          <button
+            onClick={() => setIsMaximized(!isMaximized)}
+            className="text-gray-300 hover:text-green-400 transition-colors"
+          >
+            {isMaximized ? <Minimize2 className="w-4 h-4" /> : <Maximize2 className="w-4 h-4" />}
+          </button>
         </div>
-        <div ref={terminalRef} className="p-6 h-[60vh] overflow-auto">
-          <div className="mb-4">
-            <span className="text-blue-400">preshak@hackbox:~$</span> {command}
+        <div ref={terminalRef} className={`p-6 overflow-auto transition-all duration-300 ${
+          isMaximized ? 'h-[75vh]' : 'h-[60vh]'
+        }`}>
+          <div className="mb-4 flex items-center space-x-2">
+            <span className="text-green-400 font-bold">preshak@hackbox</span>
+            <span className="text-gray-400">:</span>
+            <span className="text-blue-400">~</span>
+            <span className="text-gray-400">$</span>
+            <span className="text-gray-300 ml-2">{command}</span>
+            <span className="animate-pulse">_</span>
           </div>
           {skillExample ? (
-            <div>
-              <pre className="bg-gray-900 p-4 rounded-lg overflow-x-auto shadow-inner mb-4">
-                {skillExample}
-              </pre>
+            <div className="space-y-4">
+              <div className="relative">
+                <pre className="bg-gray-900 p-4 rounded-lg overflow-x-auto shadow-inner border border-gray-700 text-sm leading-relaxed">
+                  {skillExample}
+                </pre>
+                <button
+                  onClick={handleCopy}
+                  className="absolute top-2 right-2 p-2 bg-gray-700 rounded hover:bg-gray-600 transition-colors border border-gray-600"
+                  title="Copy code"
+                >
+                  {copied ? (
+                    <Check className="w-4 h-4 text-green-400" />
+                  ) : (
+                    <Copy className="w-4 h-4 text-gray-300" />
+                  )}
+                </button>
+              </div>
               <button
                 onClick={() => setSkillExample("")}
-                className="flex items-center text-blue-400 hover:underline"
+                className="flex items-center text-blue-400 hover:text-blue-300 transition-colors px-4 py-2 bg-gray-700 rounded-lg hover:bg-gray-600"
               >
                 <ArrowLeft className="w-4 h-4 mr-2" /> Back to Skills
               </button>
