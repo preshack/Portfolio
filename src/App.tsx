@@ -1,6 +1,5 @@
 import { useState, useEffect, useRef } from 'react'
 import { MessageCircleMore, Terminal, User, Home, Mail, Code, Briefcase, GraduationCap, Github, ArrowLeft, Instagram, Facebook, ExternalLink, Copy, Check, Minimize2, Maximize2, Send, Bot, MapPin, Flag } from 'lucide-react'
-import { useMediaQuery } from 'react-responsive';
 
 const knowledgeBase: Record<string, string> = {
   "who is preshak": "Preshak Bhattarai is a 19-year-old Computer Science student from Nepal, currently studying at the University of Wisconsin-Green Bay (UWGB), Class of 2029. He's passionate about cybersecurity and software development.",
@@ -31,24 +30,33 @@ const sections = {
     command: "cat ~/home.txt",
     icon: <Home className="w-5 h-5" />,
     content: (
-      <div className="flex flex-col items-center space-y-6">
-        <img src={require('./assets/profile.jpeg')} alt="Preshak" className="rounded-full w-36 h-36 border-4 border-green-500 shadow-lg" />
-        <div className="text-center">
-          <h2 className="text-3xl font-bold mb-2">Preshak Bhattarai</h2>
-          <p className="text-xl mb-2 text-green-400">Hacker Extraordinaire | Cybersecurity Enthusiast</p>
-          <div className="flex items-center justify-center gap-4 mb-3 text-sm text-gray-400">
-            <span className="flex items-center gap-1">
-              <Flag className="w-4 h-4" /> From Nepal
+      <div className="flex flex-col items-center space-y-6 animate-fade-in">
+        <div className="relative group">
+          <div className="absolute -inset-0.5 bg-gradient-to-r from-green-600 to-blue-600 rounded-full opacity-75 group-hover:opacity-100 transition duration-1000 group-hover:duration-200 animate-pulse blur"></div>
+          <img src={require('./assets/profile.jpeg')} alt="Preshak" className="relative rounded-full w-36 h-36 border-2 border-black" />
+        </div>
+        <div className="text-center space-y-4 max-w-2xl">
+          <h2 className="text-4xl font-bold mb-2 tracking-tight">Preshak Bhattarai</h2>
+          <div className="inline-block">
+            <p className="text-xl text-green-400 typing-effect border-r-2 border-green-400 pr-1">
+              Hacker Extraordinaire | Cybersecurity Enthusiast
+            </p>
+          </div>
+          <div className="flex items-center justify-center gap-6 text-sm text-gray-400 mt-4">
+            <span className="flex items-center gap-2 hover:text-white transition-colors">
+              <Flag className="w-4 h-4" /> Nepal
             </span>
-            <span>•</span>
-            <span className="flex items-center gap-1">
-              <MapPin className="w-4 h-4" /> Based in USA
+            <span className="w-1 h-1 bg-gray-600 rounded-full"></span>
+            <span className="flex items-center gap-2 hover:text-white transition-colors">
+              <MapPin className="w-4 h-4" /> USA
             </span>
           </div>
-          <p className="text-lg mb-4">Welcome to my Portfolio!</p>
-          <p className="text-md mb-2">I'm a 19-year-old programming enthusiast with a passion for cybersecurity.</p>
-          <p className="text-md mb-2">Currently pursuing Computer Science at the University of Wisconsin-Green Bay (Class of '29).</p>
-          <p className="text-md">My life revolves around coding, learning new technologies, and pushing the boundaries of what's possible in the digital world.</p>
+          <div className="bg-white/5 p-6 rounded-xl border border-white/10 mt-6 backdrop-blur-sm hover:bg-white/10 transition-colors">
+            <p className="text-lg leading-relaxed text-gray-300">
+              Welcome to my digital command center. I'm a 19-year-old developer obsessed with breaking and building secure systems.
+              Currently hacking my way through a Computer Science degree at UWGB (Class of '29).
+            </p>
+          </div>
         </div>
       </div>
     )
@@ -142,19 +150,19 @@ const sections = {
               ].map((skill) => (
                 <button
                   key={skill.name}
-                  className="p-3 bg-gray-700 rounded-lg hover:bg-gray-600 transition-all duration-300 border border-gray-600 hover:border-green-500 group"
+                  className="p-3 bg-gray-800/50 rounded-lg hover:bg-gray-700/50 transition-all duration-300 border border-gray-700 hover:border-terminal-green group hover:shadow-[0_0_15px_rgba(16,185,129,0.2)]"
                   onClick={() => document.dispatchEvent(new CustomEvent('showSkill', { detail: skill.name }))}
                 >
                   <div className="flex items-center justify-between mb-2">
                     <div className="flex items-center">
-                      <span className="mr-2 text-xl">{skill.icon}</span>
-                      <span className="font-semibold">{skill.name}</span>
+                      <span className="mr-2 text-xl filter drop-shadow-md">{skill.icon}</span>
+                      <span className="font-semibold text-gray-200 group-hover:text-green-300 transition-colors">{skill.name}</span>
                     </div>
-                    <span className="text-xs text-green-400">{skill.level}%</span>
+                    <span className="text-xs text-green-500 font-mono">{skill.level}%</span>
                   </div>
-                  <div className="w-full bg-gray-800 rounded-full h-1.5">
+                  <div className="w-full bg-gray-900 rounded-full h-2 shadow-inner">
                     <div
-                      className="bg-gradient-to-r from-green-500 to-green-400 h-1.5 rounded-full transition-all duration-300 group-hover:from-green-400 group-hover:to-green-300"
+                      className="bg-gradient-to-r from-green-600 to-emerald-400 h-2 rounded-full transition-all duration-1000 ease-out group-hover:shadow-[0_0_10px_rgba(16,185,129,0.5)]"
                       style={{ width: `${skill.level}%` }}
                     />
                   </div>
@@ -171,19 +179,19 @@ const sections = {
               ].map((skill) => (
                 <button
                   key={skill.name}
-                  className="p-3 bg-gray-700 rounded-lg hover:bg-gray-600 transition-all duration-300 border border-gray-600 hover:border-green-500 group"
+                  className="p-3 bg-gray-800/50 rounded-lg hover:bg-gray-700/50 transition-all duration-300 border border-gray-700 hover:border-terminal-green group hover:shadow-[0_0_15px_rgba(16,185,129,0.2)]"
                   onClick={() => document.dispatchEvent(new CustomEvent('showSkill', { detail: skill.name }))}
                 >
                   <div className="flex items-center justify-between mb-2">
                     <div className="flex items-center">
-                      <span className="mr-2 text-xl">{skill.icon}</span>
-                      <span className="font-semibold">{skill.name}</span>
+                      <span className="mr-2 text-xl filter drop-shadow-md">{skill.icon}</span>
+                      <span className="font-semibold text-gray-200 group-hover:text-green-300 transition-colors">{skill.name}</span>
                     </div>
-                    <span className="text-xs text-green-400">{skill.level}%</span>
+                    <span className="text-xs text-green-500 font-mono">{skill.level}%</span>
                   </div>
-                  <div className="w-full bg-gray-800 rounded-full h-1.5">
+                  <div className="w-full bg-gray-900 rounded-full h-2 shadow-inner">
                     <div
-                      className="bg-gradient-to-r from-green-500 to-green-400 h-1.5 rounded-full transition-all duration-300 group-hover:from-green-400 group-hover:to-green-300"
+                      className="bg-gradient-to-r from-green-600 to-emerald-400 h-2 rounded-full transition-all duration-1000 ease-out group-hover:shadow-[0_0_10px_rgba(16,185,129,0.5)]"
                       style={{ width: `${skill.level}%` }}
                     />
                   </div>
@@ -202,19 +210,19 @@ const sections = {
               ].map((skill) => (
                 <button
                   key={skill.name}
-                  className="p-3 bg-gray-700 rounded-lg hover:bg-gray-600 transition-all duration-300 border border-gray-600 hover:border-green-500 group"
+                  className="p-3 bg-gray-800/50 rounded-lg hover:bg-gray-700/50 transition-all duration-300 border border-gray-700 hover:border-terminal-green group hover:shadow-[0_0_15px_rgba(16,185,129,0.2)]"
                   onClick={() => document.dispatchEvent(new CustomEvent('showSkill', { detail: skill.name }))}
                 >
                   <div className="flex items-center justify-between mb-2">
                     <div className="flex items-center">
-                      <span className="mr-2 text-xl">{skill.icon}</span>
-                      <span className="font-semibold">{skill.name}</span>
+                      <span className="mr-2 text-xl filter drop-shadow-md">{skill.icon}</span>
+                      <span className="font-semibold text-gray-200 group-hover:text-green-300 transition-colors">{skill.name}</span>
                     </div>
-                    <span className="text-xs text-green-400">{skill.level}%</span>
+                    <span className="text-xs text-green-500 font-mono">{skill.level}%</span>
                   </div>
-                  <div className="w-full bg-gray-800 rounded-full h-1.5">
+                  <div className="w-full bg-gray-900 rounded-full h-2 shadow-inner">
                     <div
-                      className="bg-gradient-to-r from-green-500 to-green-400 h-1.5 rounded-full transition-all duration-300 group-hover:from-green-400 group-hover:to-green-300"
+                      className="bg-gradient-to-r from-green-600 to-emerald-400 h-2 rounded-full transition-all duration-1000 ease-out group-hover:shadow-[0_0_10px_rgba(16,185,129,0.5)]"
                       style={{ width: `${skill.level}%` }}
                     />
                   </div>
@@ -226,19 +234,19 @@ const sections = {
             <h4 className="text-lg font-semibold mb-3 text-green-300">Other Skills</h4>
             <div className="flex gap-3">
               <button
-                className="p-3 bg-gray-700 rounded-lg hover:bg-gray-600 transition-all duration-300 border border-gray-600 hover:border-green-500 group flex-1"
+                className="p-3 bg-gray-800/50 rounded-lg hover:bg-gray-700/50 transition-all duration-300 border border-gray-700 hover:border-terminal-green group hover:shadow-[0_0_15px_rgba(16,185,129,0.2)] flex-1"
                 onClick={() => document.dispatchEvent(new CustomEvent('showSkill', { detail: 'Video Editing' }))}
               >
                 <div className="flex items-center justify-between mb-2">
                   <div className="flex items-center">
-                    <span className="mr-2 text-xl">🎬</span>
-                    <span className="font-semibold">Video Editing</span>
+                    <span className="mr-2 text-xl filter drop-shadow-md">🎬</span>
+                    <span className="font-semibold text-gray-200 group-hover:text-green-300 transition-colors">Video Editing</span>
                   </div>
-                  <span className="text-xs text-green-400">85%</span>
+                  <span className="text-xs text-green-500 font-mono">85%</span>
                 </div>
-                <div className="w-full bg-gray-800 rounded-full h-1.5">
+                <div className="w-full bg-gray-900 rounded-full h-2 shadow-inner">
                   <div
-                    className="bg-gradient-to-r from-green-500 to-green-400 h-1.5 rounded-full transition-all duration-300 group-hover:from-green-400 group-hover:to-green-300"
+                    className="bg-gradient-to-r from-green-600 to-emerald-400 h-2 rounded-full transition-all duration-1000 ease-out group-hover:shadow-[0_0_10px_rgba(16,185,129,0.5)]"
                     style={{ width: '85%' }}
                   />
                 </div>
@@ -457,8 +465,6 @@ export default function Component() {
   const [proxAIHistory, setProxAIHistory] = useState<Array<{type: 'input' | 'output', text: string}>>([])
   const terminalRef = useRef<HTMLDivElement>(null)
   const proxAIRef = useRef<HTMLDivElement>(null)
-  const isMobile = useMediaQuery({ query: '(max-width: 768px)' });
-
   const handleSectionChange = (section: keyof typeof sections) => {
     setCurrentSection(section)
     setCommand(sections[section].command)
@@ -522,12 +528,6 @@ export default function Component() {
   };
 
   useEffect(() => {
-    if (isMobile) {
-      alert('This website is optimized for desktop screens. Please switch to a desktop mode for the best experience.');
-    }
-  }, [isMobile]);
-
-  useEffect(() => {
     handleSectionChange("home")
 
     const handleShowSkill = (e: CustomEvent<string>) => {
@@ -554,11 +554,11 @@ export default function Component() {
   }, [proxAIHistory])
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 text-green-300 p-8 font-mono flex flex-col items-center justify-center">
-      <div className={`w-full bg-gray-800 rounded-lg overflow-hidden shadow-2xl mb-8 transition-all duration-300 ${
+    <div className="min-h-screen text-green-300 p-4 md:p-8 font-mono flex flex-col items-center justify-center bg-transparent">
+      <div className={`w-full glass rounded-lg overflow-hidden shadow-2xl mb-20 transition-all duration-300 ${
         isMaximized ? 'max-w-7xl' : 'max-w-4xl'
       }`}>
-        <div className="flex justify-between items-center p-3 bg-gradient-to-r from-gray-700 to-gray-600 border-b border-gray-600">
+        <div className="flex justify-between items-center p-3 glass border-b border-gray-600">
           <div className="flex space-x-2">
             <button
               className="w-3 h-3 rounded-full bg-red-500 hover:bg-red-400 transition-colors cursor-pointer"
@@ -603,26 +603,25 @@ export default function Component() {
                   </div>
                 ))}
               </div>
-              <form onSubmit={handleProxAISubmit} className="flex items-center space-x-2 border-t border-gray-700 pt-4">
-                <span className="text-green-400 font-bold">preshak@hackbox</span>
-                <span className="text-gray-400">:</span>
-                <span className="text-blue-400">~</span>
-                <span className="text-gray-400">$</span>
-                <input
-                  type="text"
-                  value={proxAIInput}
-                  onChange={(e) => setProxAIInput(e.target.value)}
-                  className="flex-1 bg-transparent outline-none text-gray-300 ml-2"
-                  placeholder="Type a command or ask about me..."
-                  autoFocus
-                />
-                <button
-                  type="submit"
-                  className="p-2 bg-green-600 hover:bg-green-500 rounded transition-colors"
-                  title="Execute"
-                >
-                  <Send className="w-4 h-4" />
-                </button>
+              <form onSubmit={handleProxAISubmit} className="flex items-center space-x-2 border-t border-gray-700 pt-4 animate-slide-up">
+                <div className="flex items-center bg-black/30 rounded-lg px-4 py-2 w-full border border-gray-700 focus-within:border-green-500 transition-colors">
+                  <span className="text-green-400 font-bold mr-2">❯</span>
+                  <input
+                    type="text"
+                    value={proxAIInput}
+                    onChange={(e) => setProxAIInput(e.target.value)}
+                    className="flex-1 bg-transparent outline-none text-green-300 placeholder-gray-600 font-mono"
+                    placeholder="Initialize protocol or query database..."
+                    autoFocus
+                  />
+                  <button
+                    type="submit"
+                    className="ml-2 text-gray-500 hover:text-green-400 transition-colors"
+                    title="Execute"
+                  >
+                    <Send className="w-4 h-4" />
+                  </button>
+                </div>
               </form>
             </div>
           ) : (
@@ -667,16 +666,17 @@ export default function Component() {
           )}
         </div>
       </div>
-      <div className="flex justify-center space-x-4">
+      <div className="fixed bottom-4 left-1/2 transform -translate-x-1/2 glass px-6 py-3 rounded-2xl flex space-x-4 shadow-2xl z-50">
         {Object.entries(sections).map(([key, { icon }]) => (
           <button
             key={key}
             onClick={() => handleSectionChange(key as keyof typeof sections)}
-            className={`p-3 rounded-full transition-all duration-300 ease-in-out flex items-center justify-center ${
+            className={`p-3 rounded-xl transition-all duration-300 ease-in-out flex items-center justify-center transform hover:scale-110 ${
               currentSection === key
-                ? 'bg-green-500 text-white shadow-lg'
-                : 'bg-gray-700 hover:bg-gray-600 hover:shadow-md'
+                ? 'bg-terminal-green text-white shadow-lg scale-110'
+                : 'bg-transparent text-gray-400 hover:text-white hover:bg-white/10'
             }`}
+            title={key.charAt(0).toUpperCase() + key.slice(1)}
           >
             {icon}
           </button>
