@@ -561,12 +561,16 @@ export default function Component() {
         <div className="flex justify-between items-center p-3 glass border-b border-gray-600">
           <div className="flex space-x-2">
             <button
-              className="w-3 h-3 rounded-full bg-red-500 hover:bg-red-400 transition-colors cursor-pointer"
+              className="w-3 h-3 rounded-full bg-red-500 hover:bg-red-400 transition-colors cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-400 focus-visible:ring-offset-1 focus-visible:ring-offset-gray-900"
               onClick={() => window.location.reload()}
+              aria-label="Reload terminal"
+              title="Reload terminal"
             />
             <button
-              className="w-3 h-3 rounded-full bg-yellow-500 hover:bg-yellow-400 transition-colors cursor-pointer"
+              className="w-3 h-3 rounded-full bg-yellow-500 hover:bg-yellow-400 transition-colors cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-yellow-400 focus-visible:ring-offset-1 focus-visible:ring-offset-gray-900"
               onClick={() => setIsMaximized(!isMaximized)}
+              aria-label={isMaximized ? "Restore window size" : "Maximize window"}
+              title={isMaximized ? "Restore window size" : "Maximize window"}
             />
             <div className="w-3 h-3 rounded-full bg-green-500" />
           </div>
@@ -576,7 +580,8 @@ export default function Component() {
           </div>
           <button
             onClick={() => setIsMaximized(!isMaximized)}
-            className="text-gray-300 hover:text-green-400 transition-colors"
+            className="text-gray-300 hover:text-green-400 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green-400 rounded-sm"
+            aria-label={isMaximized ? "Restore window size" : "Maximize window"}
           >
             {isMaximized ? <Minimize2 className="w-4 h-4" /> : <Maximize2 className="w-4 h-4" />}
           </button>
