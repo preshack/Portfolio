@@ -1,5 +1,13 @@
 import { useState, useEffect, useRef } from 'react'
-import { MessageCircleMore, Terminal, User, Home, Mail, Code, Briefcase, GraduationCap, Github, ArrowLeft, Instagram, Facebook, ExternalLink, Copy, Check, Minimize2, Maximize2, Send, Bot, MapPin, Flag } from 'lucide-react'
+import {
+  Terminal, User, Home, Mail, Code, GraduationCap,
+  Github, Instagram, Facebook, ExternalLink, Copy, Check,
+  Minimize2, Maximize2, Send, Bot, MapPin, Flag,
+  Folder, FileText, Cpu, Globe, Server, Database,
+  Layout, Shield, Wifi, Command, X
+} from 'lucide-react'
+
+// --- Data & Content ---
 
 const knowledgeBase: Record<string, string> = {
   "who is preshak": "Preshak Bhattarai is a 19-year-old Computer Science student from Nepal, currently studying at the University of Wisconsin-Green Bay (UWGB), Class of 2029. He's passionate about cybersecurity and software development.",
@@ -25,490 +33,372 @@ const linuxCommands: Record<string, () => string> = {
   "hostname": () => "hackbox"
 };
 
-const sections = {
-  home: {
-    command: "cat ~/home.txt",
-    icon: <Home className="w-5 h-5" />,
-    content: (
-      <div className="flex flex-col items-center space-y-6 animate-fade-in">
-        <div className="relative group">
-          <div className="absolute -inset-0.5 bg-gradient-to-r from-green-600 to-blue-600 rounded-full opacity-75 group-hover:opacity-100 transition duration-1000 group-hover:duration-200 animate-pulse blur"></div>
-          <img src={require('./assets/profile.jpeg')} alt="Preshak" className="relative rounded-full w-36 h-36 border-2 border-black" />
+// --- Components ---
+
+const SkillCard = ({ name, icon: Icon, level, category, onClick }: any) => (
+  <button
+    onClick={onClick}
+    className="group relative bg-black/40 border border-green-500/20 p-4 rounded-lg hover:border-green-500 transition-all duration-300 hover:shadow-[0_0_20px_rgba(16,185,129,0.15)] text-left w-full overflow-hidden"
+  >
+    <div className="absolute top-0 right-0 p-2 opacity-10 group-hover:opacity-20 transition-opacity">
+      <Icon size={40} />
+    </div>
+    <div className="flex items-center gap-2 mb-2">
+      <Icon className="text-green-400 group-hover:text-green-300" size={18} />
+      <span className="font-bold text-gray-200 group-hover:text-white text-sm md:text-base">{name}</span>
+    </div>
+    <div className="text-xs text-gray-500 font-mono mb-2">{category}</div>
+    <div className="w-full bg-gray-800 h-1.5 rounded-full overflow-hidden">
+      <div
+        className="h-full bg-gradient-to-r from-green-600 to-green-400 group-hover:animate-pulse"
+        style={{ width: `${level}%` }}
+      />
+    </div>
+    <div className="mt-1 text-right text-[10px] text-green-500/70 font-mono">{level}% LOADED</div>
+  </button>
+);
+
+const ProjectCard = ({ name, description, link, tech }: any) => (
+  <a
+    href={link}
+    target="_blank"
+    rel="noopener noreferrer"
+    className="block group bg-black/40 border border-white/10 hover:border-green-500/50 p-4 rounded-lg transition-all duration-300"
+  >
+    <div className="flex items-start gap-3">
+      <Folder className="text-blue-400 fill-blue-400/20 w-8 h-8 shrink-0 group-hover:text-green-400 group-hover:fill-green-400/20 transition-colors" />
+      <div>
+        <div className="font-bold text-gray-200 group-hover:text-green-300 flex items-center gap-2">
+          {name}
+          <ExternalLink size={12} className="opacity-0 group-hover:opacity-100 transition-opacity" />
         </div>
-        <div className="text-center space-y-4 max-w-2xl">
-          <h2 className="text-4xl font-bold mb-2 tracking-tight">Preshak Bhattarai</h2>
-          <div className="inline-block">
-            <p className="text-xl text-green-400 typing-effect border-r-2 border-green-400 pr-1">
-              Hacker Extraordinaire | Cybersecurity Enthusiast
-            </p>
-          </div>
-          <div className="flex items-center justify-center gap-6 text-sm text-gray-400 mt-4">
-            <span className="flex items-center gap-2 hover:text-white transition-colors">
-              <Flag className="w-4 h-4" /> Nepal
+        <div className="text-sm text-gray-400 mt-1 leading-relaxed">{description}</div>
+        <div className="flex gap-2 mt-3">
+          {tech.map((t: string) => (
+            <span key={t} className="text-[10px] px-2 py-0.5 rounded-full bg-gray-800 text-gray-300 border border-gray-700">
+              {t}
             </span>
-            <span className="w-1 h-1 bg-gray-600 rounded-full"></span>
-            <span className="flex items-center gap-2 hover:text-white transition-colors">
-              <MapPin className="w-4 h-4" /> USA
-            </span>
-          </div>
-          <div className="bg-white/5 p-6 rounded-xl border border-white/10 mt-6 backdrop-blur-sm hover:bg-white/10 transition-colors">
-            <p className="text-lg leading-relaxed text-gray-300">
-              Welcome to my digital command center. I'm a 19-year-old developer obsessed with breaking and building secure systems.
-              Currently hacking my way through a Computer Science degree at UWGB (Class of '29).
-            </p>
-          </div>
+          ))}
         </div>
+        <div className="text-[10px] text-gray-600 mt-2 font-mono">drwxr-xr-x preshak:users 4.0K {new Date().toLocaleDateString()}</div>
       </div>
-    )
-  },
-  about: {
-    command: "cat ~/about.txt",
-    icon: <User className="w-5 h-5" />,
-    content: (
-      <div className="space-y-6">
-        <div>
-          <h3 className="text-2xl font-semibold mb-3 flex items-center text-green-400">
-            <GraduationCap className="w-6 h-6 mr-2" /> Education
-          </h3>
-          <ul className="list-disc list-inside space-y-2 ml-4">
-            <li className="font-semibold text-green-300">University of Wisconsin-Green Bay (UWGB) - Class of 2029
-              <ul className="list-circle list-inside ml-6 mt-1 font-normal text-gray-300">
-                <li>Bachelor of Science in Computer Science</li>
-                <li>Focus on Cybersecurity and Software Development</li>
-              </ul>
-            </li>
-            <li>Higher Secondary Degree with Computer Science Major</li>
-            <li>SEE (Secondary Education Examination) - Nepal</li>
-          </ul>
-        </div>
-        <div>
-          <h3 className="text-2xl font-semibold mb-3 flex items-center text-green-400">
-            <Briefcase className="w-6 h-6 mr-2" /> Certifications
-          </h3>
-          <ul className="list-disc list-inside space-y-2 ml-4">
-            <li>Amazon AWS Certification</li>
-            <li>Google Hackathon Certification</li>
-          </ul>
-        </div>
-        <div>
-          <h3 className="text-2xl font-semibold mb-3 flex items-center text-green-400">
-            <User className="w-6 h-6 mr-2" /> About Me
-          </h3>
-          <p>I'm a 19-year-old Computer Science student from Nepal, currently based in the USA and studying at the University of Wisconsin-Green Bay. My journey in tech started with a fascination for how things work under the hood, which evolved into a deep passion for cybersecurity and software development.</p>
-          <p className="mt-3">My days are filled with exploring new programming languages, diving deep into cybersecurity concepts, and working on innovative projects. I believe in the power of technology to change the world and I'm determined to be at the forefront of that change.</p>
-        </div>
-      </div>
-    )
-  },
-  projects: {
-    command: "ls ~/projects",
-    icon: <Code className="w-5 h-5" />,
-    content: (
-      <div className="space-y-6">
-        <h3 className="text-2xl font-semibold mb-3 text-green-400">My Projects</h3>
-        <ul className="space-y-4">
-          <li>
-            <h4 className="text-xl font-semibold flex items-center">
-              <Code className="w-5 h-5 mr-2" /> PROXLOAD
-            </h4>
-            <p>A web application for easy file uploading and downloading. Streamlines the process of sharing files across devices and users.</p>
-            <a href="https://github.com/PROX-GOD/PROXLOAD" target="_blank" rel="noopener noreferrer" className="text-blue-400 hover:underline">GitHub Repository</a>
-          </li>
-          <li>
-            <h4 className="text-xl font-semibold flex items-center">
-              <GraduationCap className="w-5 h-5 mr-2" /> PROXEDU
-            </h4>
-            <p>An educational platform providing handwritten notes to students. Aims to make quality study materials accessible to all.</p>
-            <a href="https://github.com/PROX-GOD/PROXEDU" target="_blank" rel="noopener noreferrer" className="text-blue-400 hover:underline">GitHub Repository</a>
-          </li>
-          <li>
-            <h4 className="text-xl font-semibold flex items-center">
-              <Terminal className="w-5 h-5 mr-2" /> Python Module
-            </h4>
-            <p>A custom Python module designed to simplify common programming tasks and boost productivity.</p>
-            <a href="https://github.com/PROX-GOD/PythonModule" target="_blank" rel="noopener noreferrer" className="text-blue-400 hover:underline">GitHub Repository</a>
-          </li>
-        </ul>
-      </div>
-    )
-  },
-  skills: {
-    command: "cat ~/skills.txt",
-    icon: <Terminal className="w-5 h-5" />,
-    content: (
-      <div className="space-y-6">
-        <h3 className="text-2xl font-semibold mb-3 text-green-400">Technical Skills</h3>
-        <div className="space-y-6">
-          <div>
-            <h4 className="text-lg font-semibold mb-3 text-green-300">Programming Languages</h4>
-            <div className="grid grid-cols-2 gap-3">
-              {[
-                { name: 'Python', icon: '🐍', level: 90 },
-                { name: 'JavaScript', icon: '🌐', level: 85 },
-                { name: 'C++', icon: '🖥️', level: 75 },
-                { name: 'HTML/CSS', icon: '🎨', level: 95 },
-              ].map((skill) => (
-                <button
-                  key={skill.name}
-                  className="p-3 bg-gray-800/50 rounded-lg hover:bg-gray-700/50 transition-all duration-300 border border-gray-700 hover:border-terminal-green group hover:shadow-[0_0_15px_rgba(16,185,129,0.2)]"
-                  onClick={() => document.dispatchEvent(new CustomEvent('showSkill', { detail: skill.name }))}
-                >
-                  <div className="flex items-center justify-between mb-2">
-                    <div className="flex items-center">
-                      <span className="mr-2 text-xl filter drop-shadow-md">{skill.icon}</span>
-                      <span className="font-semibold text-gray-200 group-hover:text-green-300 transition-colors">{skill.name}</span>
-                    </div>
-                    <span className="text-xs text-green-500 font-mono">{skill.level}%</span>
-                  </div>
-                  <div className="w-full bg-gray-900 rounded-full h-2 shadow-inner">
-                    <div
-                      className="bg-gradient-to-r from-green-600 to-emerald-400 h-2 rounded-full transition-all duration-1000 ease-out group-hover:shadow-[0_0_10px_rgba(16,185,129,0.5)]"
-                      style={{ width: `${skill.level}%` }}
-                    />
-                  </div>
-                </button>
-              ))}
-            </div>
-          </div>
-          <div>
-            <h4 className="text-lg font-semibold mb-3 text-green-300">Frameworks & Libraries</h4>
-            <div className="grid grid-cols-2 gap-3">
-              {[
-                { name: 'React', icon: '⚛️', level: 88 },
-                { name: 'Next.js', icon: '▲', level: 80 },
-              ].map((skill) => (
-                <button
-                  key={skill.name}
-                  className="p-3 bg-gray-800/50 rounded-lg hover:bg-gray-700/50 transition-all duration-300 border border-gray-700 hover:border-terminal-green group hover:shadow-[0_0_15px_rgba(16,185,129,0.2)]"
-                  onClick={() => document.dispatchEvent(new CustomEvent('showSkill', { detail: skill.name }))}
-                >
-                  <div className="flex items-center justify-between mb-2">
-                    <div className="flex items-center">
-                      <span className="mr-2 text-xl filter drop-shadow-md">{skill.icon}</span>
-                      <span className="font-semibold text-gray-200 group-hover:text-green-300 transition-colors">{skill.name}</span>
-                    </div>
-                    <span className="text-xs text-green-500 font-mono">{skill.level}%</span>
-                  </div>
-                  <div className="w-full bg-gray-900 rounded-full h-2 shadow-inner">
-                    <div
-                      className="bg-gradient-to-r from-green-600 to-emerald-400 h-2 rounded-full transition-all duration-1000 ease-out group-hover:shadow-[0_0_10px_rgba(16,185,129,0.5)]"
-                      style={{ width: `${skill.level}%` }}
-                    />
-                  </div>
-                </button>
-              ))}
-            </div>
-          </div>
-          <div>
-            <h4 className="text-lg font-semibold mb-3 text-green-300">Security & Tools</h4>
-            <div className="grid grid-cols-2 gap-3">
-              {[
-                { name: 'Burp Suite', icon: '🐞', level: 70 },
-                { name: 'Wireshark', icon: '🦈', level: 75 },
-                { name: 'Metasploit', icon: '🛠️', level: 65 },
-                { name: 'Nmap', icon: '🗺️', level: 80 },
-              ].map((skill) => (
-                <button
-                  key={skill.name}
-                  className="p-3 bg-gray-800/50 rounded-lg hover:bg-gray-700/50 transition-all duration-300 border border-gray-700 hover:border-terminal-green group hover:shadow-[0_0_15px_rgba(16,185,129,0.2)]"
-                  onClick={() => document.dispatchEvent(new CustomEvent('showSkill', { detail: skill.name }))}
-                >
-                  <div className="flex items-center justify-between mb-2">
-                    <div className="flex items-center">
-                      <span className="mr-2 text-xl filter drop-shadow-md">{skill.icon}</span>
-                      <span className="font-semibold text-gray-200 group-hover:text-green-300 transition-colors">{skill.name}</span>
-                    </div>
-                    <span className="text-xs text-green-500 font-mono">{skill.level}%</span>
-                  </div>
-                  <div className="w-full bg-gray-900 rounded-full h-2 shadow-inner">
-                    <div
-                      className="bg-gradient-to-r from-green-600 to-emerald-400 h-2 rounded-full transition-all duration-1000 ease-out group-hover:shadow-[0_0_10px_rgba(16,185,129,0.5)]"
-                      style={{ width: `${skill.level}%` }}
-                    />
-                  </div>
-                </button>
-              ))}
-            </div>
-          </div>
-          <div>
-            <h4 className="text-lg font-semibold mb-3 text-green-300">Other Skills</h4>
-            <div className="flex gap-3">
-              <button
-                className="p-3 bg-gray-800/50 rounded-lg hover:bg-gray-700/50 transition-all duration-300 border border-gray-700 hover:border-terminal-green group hover:shadow-[0_0_15px_rgba(16,185,129,0.2)] flex-1"
-                onClick={() => document.dispatchEvent(new CustomEvent('showSkill', { detail: 'Video Editing' }))}
-              >
-                <div className="flex items-center justify-between mb-2">
-                  <div className="flex items-center">
-                    <span className="mr-2 text-xl filter drop-shadow-md">🎬</span>
-                    <span className="font-semibold text-gray-200 group-hover:text-green-300 transition-colors">Video Editing</span>
-                  </div>
-                  <span className="text-xs text-green-500 font-mono">85%</span>
-                </div>
-                <div className="w-full bg-gray-900 rounded-full h-2 shadow-inner">
-                  <div
-                    className="bg-gradient-to-r from-green-600 to-emerald-400 h-2 rounded-full transition-all duration-1000 ease-out group-hover:shadow-[0_0_10px_rgba(16,185,129,0.5)]"
-                    style={{ width: '85%' }}
-                  />
-                </div>
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-    )
-  },
-  contact: {
-    command: "cat ~/contact.txt",
-    icon: <Mail className="w-5 h-5" />,
-    content: (
-      <div className="space-y-6">
-        <h3 className="text-2xl font-semibold mb-4 text-green-400">Get In Touch</h3>
-        <div className="grid gap-3">
-          <a
-            href="mailto:proxjodd@gmail.com"
-            className="flex items-center justify-between p-4 bg-gray-700 rounded-lg hover:bg-gray-600 transition-all duration-300 border border-gray-600 hover:border-green-500 group"
-          >
-            <div className="flex items-center">
-              <div className="p-2 bg-gray-800 rounded-lg mr-3 group-hover:bg-gray-900 transition-colors">
-                <Mail className="w-5 h-5 text-green-400" />
-              </div>
-              <div>
-                <div className="text-xs text-gray-400">Email</div>
-                <div className="font-semibold">proxjodd@gmail.com</div>
-              </div>
-            </div>
-            <ExternalLink className="w-4 h-4 text-gray-400 group-hover:text-green-400 transition-colors" />
-          </a>
-          <a
-            href="https://github.com/PROX-GOD"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex items-center justify-between p-4 bg-gray-700 rounded-lg hover:bg-gray-600 transition-all duration-300 border border-gray-600 hover:border-green-500 group"
-          >
-            <div className="flex items-center">
-              <div className="p-2 bg-gray-800 rounded-lg mr-3 group-hover:bg-gray-900 transition-colors">
-                <Github className="w-5 h-5 text-green-400" />
-              </div>
-              <div>
-                <div className="text-xs text-gray-400">GitHub</div>
-                <div className="font-semibold">github.com/PROX-GOD</div>
-              </div>
-            </div>
-            <ExternalLink className="w-4 h-4 text-gray-400 group-hover:text-green-400 transition-colors" />
-          </a>
-          <a
-            href="https://instagram.com/preshakdjodd"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex items-center justify-between p-4 bg-gray-700 rounded-lg hover:bg-gray-600 transition-all duration-300 border border-gray-600 hover:border-green-500 group"
-          >
-            <div className="flex items-center">
-              <div className="p-2 bg-gray-800 rounded-lg mr-3 group-hover:bg-gray-900 transition-colors">
-                <Instagram className="w-5 h-5 text-green-400" />
-              </div>
-              <div>
-                <div className="text-xs text-gray-400">Instagram</div>
-                <div className="font-semibold">@preshakdjodd</div>
-              </div>
-            </div>
-            <ExternalLink className="w-4 h-4 text-gray-400 group-hover:text-green-400 transition-colors" />
-          </a>
-          <a
-            href="https://facebook.com/PreshakBhattarai"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex items-center justify-between p-4 bg-gray-700 rounded-lg hover:bg-gray-600 transition-all duration-300 border border-gray-600 hover:border-green-500 group"
-          >
-            <div className="flex items-center">
-              <div className="p-2 bg-gray-800 rounded-lg mr-3 group-hover:bg-gray-900 transition-colors">
-                <Facebook className="w-5 h-5 text-green-400" />
-              </div>
-              <div>
-                <div className="text-xs text-gray-400">Facebook</div>
-                <div className="font-semibold">PreshakBhattarai</div>
-              </div>
-            </div>
-            <ExternalLink className="w-4 h-4 text-gray-400 group-hover:text-green-400 transition-colors" />
-          </a>
-        </div>
-        <div className="mt-6 p-4 bg-gray-700 rounded-lg border border-gray-600">
-          <div className="flex items-start">
-            <MessageCircleMore className="w-5 h-5 text-green-400 mr-3 mt-1 flex-shrink-0" />
-            <div>
-              <div className="text-sm font-semibold mb-1 text-green-300">Available for Projects</div>
-              <div className="text-sm text-gray-300">Open to freelance opportunities and collaborations. Let's build something amazing together!</div>
-            </div>
-          </div>
-        </div>
-      </div>
-    )
-  },
-  proxai: {
-    command: "cat ~/proxai.py",
-    icon: <Bot className="w-5 h-5" />,
-    content: null
-  }
-}
+    </div>
+  </a>
+);
 
-const skillExamples: Record<string, string> = {
-  Python: `def fibonacci(n):
-    if n <= 1:
-        return n
-    return fibonacci(n-1) + fibonacci(n-2)
+const ContactRow = ({ label, value, icon: Icon, href, copyable = false }: any) => {
+  const [copied, setCopied] = useState(false);
 
-for i in range(10):
-    print(fibonacci(i), end=" ")`,
-  JavaScript: `const quickSort = (arr) => {
-  if (arr.length <= 1) return arr;
-  const pivot = arr[arr.length - 1];
-  const left = arr.filter((x, i) => x <= pivot && i < arr.length - 1);
-  const right = arr.filter(x => x > pivot);
-  return [...quickSort(left), pivot, ...quickSort(right)];
-};`,
-  React: `import { useState, useEffect } from 'react';
-
-function Counter() {
-  const [count, setCount] = useState(0);
-
-  useEffect(() => {
-    document.title = \`Count: \${count}\`;
-  }, [count]);
-
-  return (
-    <button onClick={() => setCount(count + 1)}>
-      Clicked {count} times
-    </button>
-  );
-}`,
-  'HTML/CSS': `<!DOCTYPE html>
-<html>
-<head>
-  <style>
-    .card {
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      padding: 20px;
-      border-radius: 10px;
-      box-shadow: 0 10px 20px rgba(0,0,0,0.2);
-    }
-  </style>
-</head>
-<body>
-  <div class="card">Beautiful Card</div>
-</body>
-</html>`,
-  'Next.js': `import { useState } from 'react';
-
-export default function Home() {
-  const [data, setData] = useState(null);
-
-  const fetchData = async () => {
-    const res = await fetch('/api/data');
-    const json = await res.json();
-    setData(json);
+  const handleCopy = (e: any) => {
+    e.preventDefault();
+    navigator.clipboard.writeText(value);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
   };
 
-  return <button onClick={fetchData}>Fetch Data</button>;
-}`,
-  'C++': `#include <iostream>
-#include <vector>
-using namespace std;
+  return (
+    <a
+      href={href}
+      target={href.startsWith('http') ? "_blank" : undefined}
+      rel="noopener noreferrer"
+      className="flex items-center justify-between p-3 bg-white/5 border border-white/5 hover:bg-white/10 hover:border-green-500/30 rounded-lg group transition-all"
+    >
+      <div className="flex items-center gap-3 overflow-hidden">
+        <div className="p-2 bg-black/30 rounded-md text-green-400 group-hover:text-white transition-colors">
+          <Icon size={18} />
+        </div>
+        <div className="min-w-0">
+          <div className="text-[10px] text-gray-500 uppercase tracking-wider font-semibold">{label}</div>
+          <div className="text-sm text-gray-300 font-mono truncate">{value}</div>
+        </div>
+      </div>
+      {copyable ? (
+        <button
+          onClick={handleCopy}
+          className="p-2 text-gray-500 hover:text-green-400 transition-colors"
+        >
+          {copied ? <Check size={14} /> : <Copy size={14} />}
+        </button>
+      ) : (
+        <ExternalLink size={14} className="text-gray-500 group-hover:text-green-400 transition-colors" />
+      )}
+    </a>
+  );
+};
 
-int binarySearch(vector<int>& arr, int target) {
-    int left = 0, right = arr.size() - 1;
-    while (left <= right) {
-        int mid = left + (right - left) / 2;
-        if (arr[mid] == target) return mid;
-        if (arr[mid] < target) left = mid + 1;
-        else right = mid - 1;
-    }
-    return -1;
-}`,
-  'Video Editing': `Professional video editing using CapCut:
-- Color grading & correction
-- Smooth transitions & effects
-- Audio mixing & synchronization
-- Motion graphics & animations
-- Multi-layer compositing`,
-  'Burp Suite': `Web Application Security Testing:
-- Intercepting & modifying HTTP requests
-- SQL injection detection
-- XSS vulnerability scanning
-- Session token analysis
-- API security testing`,
-  'Wireshark': `Network Protocol Analysis:
-- Packet capture & inspection
-- Traffic flow analysis
-- Protocol debugging
-- Network troubleshooting
-- Security monitoring`,
-  'Metasploit': `Penetration Testing Framework:
-- Exploit development & testing
-- Vulnerability assessment
-- Payload generation
-- Post-exploitation modules
-- Security auditing`,
-  'Nmap': `Network Discovery & Scanning:
-- Port scanning & enumeration
-- Service version detection
-- OS fingerprinting
-- Network mapping
-- Vulnerability detection scripts`
-}
+// --- Main App Component ---
 
-export default function Component() {
-  const [currentSection, setCurrentSection] = useState<keyof typeof sections>("home")
-  const [command, setCommand] = useState("")
-  const [skillExample, setSkillExample] = useState("")
-  const [isMaximized, setIsMaximized] = useState(false)
-  const [copied, setCopied] = useState(false)
-  const [proxAIInput, setProxAIInput] = useState("")
-  const [proxAIHistory, setProxAIHistory] = useState<Array<{type: 'input' | 'output', text: string}>>([])
-  const terminalRef = useRef<HTMLDivElement>(null)
-  const proxAIRef = useRef<HTMLDivElement>(null)
-  const handleSectionChange = (section: keyof typeof sections) => {
-    setCurrentSection(section)
-    setCommand(sections[section].command)
-    setSkillExample("")
-    if (section === 'proxai') {
-      setProxAIHistory([{
-        type: 'output',
-        text: 'PROX AI Terminal v1.0\nType "help" for available commands or ask questions about Preshak.\n'
-      }]);
-    }
-  }
+export default function App() {
+  const [currentSection, setCurrentSection] = useState("home");
+  const [command, setCommand] = useState("cat ~/home.txt");
+  const [skillExample, setSkillExample] = useState("");
+  const [isMaximized, setIsMaximized] = useState(false);
+  const [copied, setCopied] = useState(false);
+  const [proxAIInput, setProxAIInput] = useState("");
+  const [proxAIHistory, setProxAIHistory] = useState<Array<{type: 'input' | 'output', text: string}>>([
+    { type: 'output', text: 'ProxAI Neural Interface v2.0.4 initialized...\nConnected to preshak@hackbox.\nAwaiting input.' }
+  ]);
+  const terminalRef = useRef<HTMLDivElement>(null);
+  const proxAIRef = useRef<HTMLDivElement>(null);
 
-  const handleCopy = () => {
-    if (skillExample) {
-      navigator.clipboard.writeText(skillExample)
-      setCopied(true)
-      setTimeout(() => setCopied(false), 2000)
+  // Type definition for sections to avoid implicit any errors if needed,
+  // though typically inference works.
+  // The issue in the previous error was likely due to how 'key' was being accessed or inferred in the map callback
+  // or a temporary build artifact issue.
+  // Explicitly typing 'sections' or ensuring the map callback is clean helps.
+
+  const sections: Record<string, { command: string, icon: JSX.Element, content: JSX.Element | null }> = {
+    home: {
+      command: "cat ~/home.txt",
+      icon: <Home className="w-5 h-5" />,
+      content: (
+        <div className="flex flex-col items-center justify-center min-h-[50vh] animate-fade-in">
+          <div className="relative mb-8">
+            <div className="absolute -inset-1 bg-gradient-to-r from-green-500 to-blue-500 rounded-full blur opacity-30 animate-pulse"></div>
+            <img
+              src={require('./assets/profile.jpeg')}
+              alt="Preshak"
+              className="relative w-32 h-32 md:w-40 md:h-40 rounded-full border-2 border-green-500/50 object-cover shadow-2xl"
+            />
+            <div className="absolute bottom-1 right-1 w-4 h-4 bg-green-500 border-2 border-black rounded-full" title="Online"></div>
+          </div>
+
+          <div className="text-center space-y-4 max-w-2xl px-4">
+            <h1 className="text-3xl md:text-5xl font-bold tracking-tight text-white mb-2">
+              Preshak <span className="text-green-500">Bhattarai</span>
+            </h1>
+
+            <div className="inline-flex items-center px-3 py-1 bg-green-500/10 border border-green-500/20 rounded-full text-green-400 text-xs md:text-sm font-mono mb-4">
+              <span className="w-2 h-2 bg-green-500 rounded-full animate-ping mr-2"></span>
+              System Status: ONLINE
+            </div>
+
+            <p className="text-lg md:text-xl text-gray-300 font-light">
+              Cybersecurity Analyst <span className="text-gray-600 mx-2">|</span> Full Stack Developer
+            </p>
+
+            <div className="flex flex-wrap justify-center gap-4 text-sm text-gray-400 font-mono mt-6">
+              <div className="flex items-center gap-2 bg-black/30 px-3 py-1 rounded border border-gray-800">
+                <MapPin size={14} className="text-blue-400" />
+                <span>Wisconsin, USA</span>
+              </div>
+              <div className="flex items-center gap-2 bg-black/30 px-3 py-1 rounded border border-gray-800">
+                <Flag size={14} className="text-red-400" />
+                <span>Nepal Origin</span>
+              </div>
+              <div className="flex items-center gap-2 bg-black/30 px-3 py-1 rounded border border-gray-800">
+                <GraduationCap size={14} className="text-yellow-400" />
+                <span>UWGB '29</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      )
+    },
+    about: {
+      command: "cat ~/about.txt",
+      icon: <User className="w-5 h-5" />,
+      content: (
+        <div className="space-y-8 animate-fade-in max-w-3xl mx-auto">
+          <div className="bg-white/5 border border-white/10 rounded-xl p-6 relative overflow-hidden">
+            <div className="absolute top-0 right-0 p-4 opacity-5">
+              <User size={100} />
+            </div>
+            <h3 className="text-xl font-bold text-green-400 mb-4 flex items-center gap-2">
+              <Command size={20} /> Identity Verification
+            </h3>
+            <p className="text-gray-300 leading-relaxed">
+              I'm a 19-year-old Computer Science student at UWGB, originally from Nepal. My digital existence is defined by a relentless curiosity for how systems work—and how they can be broken. I bridge the gap between building secure software and testing its defenses.
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-2 gap-6">
+            <div className="bg-black/20 border border-gray-800 rounded-lg p-5">
+              <h4 className="text-lg font-semibold text-blue-400 mb-3 flex items-center gap-2">
+                <GraduationCap size={18} /> Education Log
+              </h4>
+              <ul className="space-y-4 text-sm">
+                <li className="relative pl-4 border-l-2 border-blue-500/30">
+                  <div className="font-bold text-gray-200">University of Wisconsin-Green Bay</div>
+                  <div className="text-gray-400">B.S. Computer Science</div>
+                  <div className="text-xs text-blue-400/80 mt-1">Class of 2029 • Current</div>
+                </li>
+                <li className="relative pl-4 border-l-2 border-gray-700">
+                  <div className="font-bold text-gray-200">High School</div>
+                  <div className="text-gray-400">Computer Science Major</div>
+                  <div className="text-xs text-gray-500 mt-1">Nepal</div>
+                </li>
+              </ul>
+            </div>
+
+            <div className="bg-black/20 border border-gray-800 rounded-lg p-5">
+              <h4 className="text-lg font-semibold text-yellow-400 mb-3 flex items-center gap-2">
+                <Shield size={18} /> Certifications
+              </h4>
+              <div className="space-y-3">
+                <div className="flex items-center gap-3 p-2 bg-white/5 rounded border border-white/5">
+                  <div className="bg-yellow-500/20 p-2 rounded text-yellow-500"><Server size={16} /></div>
+                  <div>
+                    <div className="font-medium text-gray-200">Amazon AWS</div>
+                    <div className="text-xs text-gray-500">Cloud Practitioner</div>
+                  </div>
+                </div>
+                <div className="flex items-center gap-3 p-2 bg-white/5 rounded border border-white/5">
+                  <div className="bg-blue-500/20 p-2 rounded text-blue-500"><Code size={16} /></div>
+                  <div>
+                    <div className="font-medium text-gray-200">Google Hackathon</div>
+                    <div className="text-xs text-gray-500">Participant</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )
+    },
+    skills: {
+      command: "./list_skills.sh --verbose",
+      icon: <Cpu className="w-5 h-5" />,
+      content: (
+        <div className="space-y-8 animate-fade-in">
+          <div>
+            <h3 className="text-sm font-mono text-gray-500 mb-3 uppercase tracking-wider flex items-center gap-2">
+              <Terminal size={14} /> Languages & Core
+            </h3>
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
+              <SkillCard name="Python" level={90} icon={FileText} category="Scripting" onClick={() => document.dispatchEvent(new CustomEvent('showSkill', { detail: 'Python' }))} />
+              <SkillCard name="JavaScript" level={85} icon={Globe} category="Web" onClick={() => document.dispatchEvent(new CustomEvent('showSkill', { detail: 'JavaScript' }))} />
+              <SkillCard name="C++" level={75} icon={Cpu} category="System" onClick={() => document.dispatchEvent(new CustomEvent('showSkill', { detail: 'C++' }))} />
+              <SkillCard name="HTML/CSS" level={95} icon={Layout} category="Frontend" onClick={() => document.dispatchEvent(new CustomEvent('showSkill', { detail: 'HTML/CSS' }))} />
+            </div>
+          </div>
+
+          <div>
+            <h3 className="text-sm font-mono text-gray-500 mb-3 uppercase tracking-wider flex items-center gap-2">
+              <Shield size={14} /> Security Arsenal
+            </h3>
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
+              <SkillCard name="Burp Suite" level={70} icon={Shield} category="Web Sec" onClick={() => document.dispatchEvent(new CustomEvent('showSkill', { detail: 'Burp Suite' }))} />
+              <SkillCard name="Wireshark" level={75} icon={Wifi} category="Network" onClick={() => document.dispatchEvent(new CustomEvent('showSkill', { detail: 'Wireshark' }))} />
+              <SkillCard name="Metasploit" level={65} icon={Terminal} category="Exploit" onClick={() => document.dispatchEvent(new CustomEvent('showSkill', { detail: 'Metasploit' }))} />
+              <SkillCard name="Nmap" level={80} icon={MapPin} category="Recon" onClick={() => document.dispatchEvent(new CustomEvent('showSkill', { detail: 'Nmap' }))} />
+            </div>
+          </div>
+
+          <div>
+            <h3 className="text-sm font-mono text-gray-500 mb-3 uppercase tracking-wider flex items-center gap-2">
+              <Database size={14} /> Frameworks & Tools
+            </h3>
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
+              <SkillCard name="React" level={88} icon={Code} category="Library" onClick={() => document.dispatchEvent(new CustomEvent('showSkill', { detail: 'React' }))} />
+              <SkillCard name="Next.js" level={80} icon={Globe} category="Framework" onClick={() => document.dispatchEvent(new CustomEvent('showSkill', { detail: 'Next.js' }))} />
+            </div>
+          </div>
+        </div>
+      )
+    },
+    projects: {
+      command: "ls -la ~/projects/",
+      icon: <Folder className="w-5 h-5" />,
+      content: (
+        <div className="animate-fade-in">
+          <div className="grid md:grid-cols-2 gap-4">
+            <ProjectCard
+              name="PROXLOAD"
+              description="Secure file sharing platform enabling seamless encrypted transfers across devices."
+              link="https://github.com/PROX-GOD/PROXLOAD"
+              tech={['React', 'Node.js', 'Encryption']}
+            />
+            <ProjectCard
+              name="PROXEDU"
+              description="Open-source educational resource hub distributing handwritten notes and study materials."
+              link="https://github.com/PROX-GOD/PROXEDU"
+              tech={['Next.js', 'PostgreSQL', 'Tailwind']}
+            />
+            <ProjectCard
+              name="Python Modules"
+              description="Collection of custom productivity scripts and automation tools for developer workflows."
+              link="https://github.com/PROX-GOD/PythonModule"
+              tech={['Python', 'Automation', 'CLI']}
+            />
+          </div>
+        </div>
+      )
+    },
+    contact: {
+      command: "cat ~/contact_info.json",
+      icon: <Mail className="w-5 h-5" />,
+      content: (
+        <div className="max-w-2xl mx-auto animate-fade-in">
+          <div className="bg-black/30 border border-gray-800 rounded-xl p-6 md:p-8 backdrop-blur-sm">
+            <div className="flex items-center justify-between mb-6">
+              <h3 className="text-xl font-bold text-green-400">Establish Connection</h3>
+              <div className="flex gap-1">
+                <span className="w-2 h-2 rounded-full bg-red-500"></span>
+                <span className="w-2 h-2 rounded-full bg-yellow-500"></span>
+                <span className="w-2 h-2 rounded-full bg-green-500"></span>
+              </div>
+            </div>
+
+            <div className="space-y-3">
+              <ContactRow label="Email Protocol" value="proxjodd@gmail.com" icon={Mail} href="mailto:proxjodd@gmail.com" copyable />
+              <ContactRow label="GitHub Repository" value="github.com/PROX-GOD" icon={Github} href="https://github.com/PROX-GOD" />
+              <ContactRow label="Instagram Feed" value="@preshakdjodd" icon={Instagram} href="https://instagram.com/preshakdjodd" />
+              <ContactRow label="Facebook Net" value="PreshakBhattarai" icon={Facebook} href="https://facebook.com/PreshakBhattarai" />
+            </div>
+
+            <div className="mt-6 pt-6 border-t border-gray-800">
+              <div className="bg-green-500/10 border border-green-500/20 rounded-lg p-4 flex items-start gap-3">
+                <Bot className="text-green-400 shrink-0 mt-1" size={20} />
+                <div className="text-sm">
+                  <div className="font-bold text-green-300 mb-1">Status: AVAILABLE</div>
+                  <div className="text-gray-400">
+                    Open for freelance security audits, penetration testing, and full-stack development contracts. Initiate handshake via email.
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )
+    },
+    proxai: {
+      command: "./run_proxai_v2.sh",
+      icon: <Bot className="w-5 h-5" />,
+      content: null
     }
-  }
+  };
+
+  const handleSectionChange = (section: any) => {
+    setCurrentSection(section);
+    setCommand(sections[section as keyof typeof sections].command);
+    setSkillExample("");
+  };
 
   const handleProxAISubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!proxAIInput.trim()) return;
 
     const input = proxAIInput.trim();
+    // Use functional update to ensure we have the latest history if needed, though mostly okay here.
+    // However, the issue might be related to how newHistory was constructed or type inference.
+    // But the error log was about 'key' in the Dock map. Let's fix that first.
+
     const newHistory = [...proxAIHistory, { type: 'input' as const, text: input }];
 
     let output = '';
+    const lowerInput = input.toLowerCase();
 
-    if (input.toLowerCase() === 'help') {
-      output = `Available Commands:
-- Linux commands: whoami, pwd, date, ls, uname, hostname, uptime, etc.
-- Questions: Ask anything about Preshak (e.g., "who is preshak", "what does he do")
-- clear: Clear terminal history`;
-    } else if (input.toLowerCase() === 'clear') {
+    if (lowerInput === 'help') {
+      output = "Available commands: help, clear, whoami, skills, projects, contact, [question]";
+    } else if (lowerInput === 'clear') {
       setProxAIHistory([]);
       setProxAIInput('');
       return;
-    } else if (linuxCommands[input.toLowerCase()]) {
-      output = linuxCommands[input.toLowerCase()]();
+    } else if (linuxCommands[lowerInput]) {
+      output = linuxCommands[lowerInput]();
     } else {
-      const lowerInput = input.toLowerCase();
       let found = false;
-
       for (const [key, value] of Object.entries(knowledgeBase)) {
         if (lowerInput.includes(key) || key.includes(lowerInput)) {
           output = value;
@@ -516,171 +406,255 @@ export default function Component() {
           break;
         }
       }
-
-      if (!found) {
-        output = `Command or query not recognized. Type "help" for available options.`;
-      }
+      if (!found) output = "Query not recognized. Access denied or data missing. Try 'help'.";
     }
 
-    newHistory.push({ type: 'output' as const, text: output });
+    // Simulate network delay
+    setTimeout(() => {
+      setProxAIHistory(prev => [...prev, { type: 'output', text: output }]);
+    }, 300);
+
     setProxAIHistory(newHistory);
     setProxAIInput('');
   };
 
+  // Event listener for skill clicks from the new SkillCards
   useEffect(() => {
-    handleSectionChange("home")
-
     const handleShowSkill = (e: CustomEvent<string>) => {
-      setSkillExample(skillExamples[e.detail as keyof typeof skillExamples])
-    }
+      // Find the skill example key
+      const skillName = e.detail;
+      // Map the skill name to the example key if needed
+      // For now, assuming direct match or simple mapping
+      // The original code had specific keys in 'skillExamples'
+      // We need to ensure we have those.
+      // Importing 'skillExamples' logic
+      const examples: Record<string, string> = {
+         'Python': `def fibonacci(n):
+    if n <= 1: return n
+    return fibonacci(n-1) + fibonacci(n-2)
 
-    document.addEventListener('showSkill', handleShowSkill as EventListener)
+# Neural Network implementation pending...`,
+         'JavaScript': `const connectDB = async () => {
+  try {
+    await mongoose.connect(process.env.MONGO_URI);
+    console.log('MongoDB Connected...');
+  } catch (err) {
+    console.error(err.message);
+    process.exit(1);
+  }
+};`,
+         'React': `const HackerTerminal = () => {
+  const [hacked, setHacked] = useState(false);
+  return (
+    <div className={hacked ? 'bg-green-900' : 'bg-black'}>
+      <button onClick={() => setHacked(true)}>
+        Inject Payload
+      </button>
+    </div>
+  );
+};`,
+         'HTML/CSS': `.glass-panel {
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+}`,
+         'Next.js': `export async function getServerSideProps() {
+  const res = await fetch('https://api.github.com/users/PROX-GOD')
+  const profile = await res.json()
+  return { props: { profile } }
+}`,
+         'C++': `#include <iostream>
+using namespace std;
 
-    return () => {
-      document.removeEventListener('showSkill', handleShowSkill as EventListener)
-    }
-  }, [])
+int main() {
+    int *ptr = new int(10);
+    cout << "Memory Address: " << ptr << endl;
+    cout << "Value: " << *ptr << endl;
+    delete ptr; // Prevent memory leak
+    return 0;
+}`,
+         'Video Editing': `[Timeline Sequence 01]
+> Color Grade: Teal & Orange LUT
+> Audio: De-noise & EQ
+> FX: Glitch transition at 00:02:15
+> Export: 4K 60fps H.264`,
+         'Burp Suite': `POST /login HTTP/1.1
+Host: target-site.com
+Content-Type: application/x-www-form-urlencoded
+
+username=admin' OR '1'='1&password=password`,
+         'Wireshark': `Frame 1: 66 bytes on wire (528 bits), 66 bytes captured
+Ethernet II, Src: Apple_xx:xx:xx, Dst: Router_xx:xx:xx
+Internet Protocol Version 4, Src: 192.168.1.5, Dst: 8.8.8.8
+Transmission Control Protocol, Src Port: 54321, Dst Port: 443`,
+         'Metasploit': `msf6 > use exploit/windows/smb/ms17_010_eternalblue
+msf6 exploit(ms17_010_eternalblue) > set RHOSTS 192.168.1.105
+msf6 exploit(ms17_010_eternalblue) > exploit
+
+[*] Started reverse TCP handler on 192.168.1.5:4444
+[+] Target is vulnerable: Windows 7 Ultimate 7601 Service Pack 1`,
+         'Nmap': `$ nmap -sC -sV -O 192.168.1.105
+Starting Nmap 7.92...
+PORT     STATE SERVICE       VERSION
+22/tcp   open  ssh           OpenSSH 7.6p1
+80/tcp   open  http          Apache httpd 2.4.29
+Device type: general purpose
+Running: Linux 4.X`
+      };
+
+      if (examples[skillName]) {
+        setSkillExample(examples[skillName]);
+      }
+    };
+
+    document.addEventListener('showSkill', handleShowSkill as EventListener);
+    return () => document.removeEventListener('showSkill', handleShowSkill as EventListener);
+  }, []);
 
   useEffect(() => {
-    if (terminalRef.current) {
-      terminalRef.current.scrollTop = terminalRef.current.scrollHeight
-    }
-  }, [command, currentSection, skillExample])
+    if (terminalRef.current) terminalRef.current.scrollTop = terminalRef.current.scrollHeight;
+  }, [command, currentSection, skillExample]);
 
   useEffect(() => {
-    if (proxAIRef.current) {
-      proxAIRef.current.scrollTop = proxAIRef.current.scrollHeight
-    }
-  }, [proxAIHistory])
+    if (proxAIRef.current) proxAIRef.current.scrollTop = proxAIRef.current.scrollHeight;
+  }, [proxAIHistory]);
 
   return (
-    <div className="min-h-screen text-green-300 p-4 md:p-8 font-mono flex flex-col items-center justify-center bg-transparent">
-      <div className={`w-full glass rounded-lg overflow-hidden shadow-2xl mb-20 transition-all duration-300 ${
-        isMaximized ? 'max-w-7xl' : 'max-w-4xl'
-      }`}>
-        <div className="flex justify-between items-center p-3 glass border-b border-gray-600">
-          <div className="flex space-x-2">
-            <button
-              className="w-3 h-3 rounded-full bg-red-500 hover:bg-red-400 transition-colors cursor-pointer"
-              onClick={() => window.location.reload()}
-            />
-            <button
-              className="w-3 h-3 rounded-full bg-yellow-500 hover:bg-yellow-400 transition-colors cursor-pointer"
-              onClick={() => setIsMaximized(!isMaximized)}
-            />
-            <div className="w-3 h-3 rounded-full bg-green-500" />
+    <div className="min-h-screen bg-[#0a0a0a] text-gray-200 font-mono flex flex-col items-center justify-center p-2 md:p-6 overflow-hidden relative selection:bg-green-500/30 selection:text-green-200">
+      {/* Background Grid */}
+      <div className="fixed inset-0 pointer-events-none z-0 opacity-20"
+           style={{
+             backgroundImage: 'linear-gradient(rgba(16, 185, 129, 0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(16, 185, 129, 0.1) 1px, transparent 1px)',
+             backgroundSize: '40px 40px'
+           }}>
+      </div>
+
+      {/* Main Terminal Window */}
+      <div className={`relative z-10 w-full bg-[#0c0c0c]/90 backdrop-blur-xl border border-gray-800 rounded-xl overflow-hidden shadow-2xl transition-all duration-500 flex flex-col ${isMaximized ? 'h-[90vh] max-w-7xl' : 'h-[85vh] md:h-[700px] max-w-5xl'}`}>
+
+        {/* Title Bar */}
+        <div className="flex items-center justify-between px-4 py-3 bg-[#111] border-b border-gray-800 shrink-0 cursor-grab active:cursor-grabbing">
+          <div className="flex items-center gap-2">
+            <div className="flex gap-2 mr-4 group">
+              <button onClick={() => window.location.reload()} className="w-3 h-3 rounded-full bg-red-500/80 hover:bg-red-500 transition-colors" />
+              <button onClick={() => setIsMaximized(!isMaximized)} className="w-3 h-3 rounded-full bg-yellow-500/80 hover:bg-yellow-500 transition-colors" />
+              <button className="w-3 h-3 rounded-full bg-green-500/80 hover:bg-green-500 transition-colors" />
+            </div>
+            <div className="flex items-center text-xs md:text-sm text-gray-500 font-semibold gap-2">
+              <Terminal size={14} className="text-green-500" />
+              <span className="hidden md:inline">preshak@hackbox: ~</span>
+              <span className="md:hidden">Terminal</span>
+            </div>
           </div>
-          <div className="flex items-center space-x-2">
-            <Terminal className="w-4 h-4 text-green-400" />
-            <div className="text-sm text-gray-300 font-semibold">Preshak's Terminal</div>
-          </div>
-          <button
-            onClick={() => setIsMaximized(!isMaximized)}
-            className="text-gray-300 hover:text-green-400 transition-colors"
-          >
-            {isMaximized ? <Minimize2 className="w-4 h-4" /> : <Maximize2 className="w-4 h-4" />}
+          <button onClick={() => setIsMaximized(!isMaximized)} className="text-gray-500 hover:text-white transition-colors">
+            {isMaximized ? <Minimize2 size={16} /> : <Maximize2 size={16} />}
           </button>
         </div>
-        <div ref={terminalRef} className={`p-6 overflow-auto transition-all duration-300 custom-scrollbar ${
-          isMaximized ? 'h-[75vh]' : 'h-[60vh]'
-        }`}>
+
+        {/* Content Area */}
+        <div ref={terminalRef} className="flex-1 overflow-y-auto p-4 md:p-8 custom-scrollbar scroll-smooth">
           {currentSection === 'proxai' ? (
-            <div className="space-y-4 h-full flex flex-col">
-              <div ref={proxAIRef} className="space-y-3 flex-1 overflow-auto custom-scrollbar">
-                {proxAIHistory.map((entry, index) => (
-                  <div key={index}>
-                    {entry.type === 'input' ? (
-                      <div className="flex items-center space-x-2">
-                        <span className="text-green-400 font-bold">preshak@hackbox</span>
-                        <span className="text-gray-400">:</span>
-                        <span className="text-blue-400">~</span>
-                        <span className="text-gray-400">$</span>
-                        <span className="text-gray-300 ml-2">{entry.text}</span>
-                      </div>
-                    ) : (
-                      <pre className="text-gray-300 whitespace-pre-wrap font-mono text-sm">{entry.text}</pre>
-                    )}
+            <div className="h-full flex flex-col">
+              <div className="flex-1 space-y-4 mb-4" ref={proxAIRef}>
+                {proxAIHistory.map((entry, idx) => (
+                  <div key={idx} className={`flex ${entry.type === 'input' ? 'justify-end' : 'justify-start'}`}>
+                    <div className={`max-w-[85%] rounded-lg p-3 ${
+                      entry.type === 'input'
+                        ? 'bg-green-500/10 border border-green-500/20 text-green-100 rounded-br-none'
+                        : 'bg-gray-800/50 border border-gray-700 text-gray-300 rounded-bl-none font-mono whitespace-pre-wrap'
+                    }`}>
+                      {entry.type === 'output' && <div className="text-[10px] text-green-500 mb-1 opacity-70">PROX_AI_CORE</div>}
+                      {entry.text}
+                    </div>
                   </div>
                 ))}
               </div>
-              <form onSubmit={handleProxAISubmit} className="flex items-center space-x-2 border-t border-gray-700 pt-4 animate-slide-up">
-                <div className="flex items-center bg-black/30 rounded-lg px-4 py-2 w-full border border-gray-700 focus-within:border-green-500 transition-colors">
-                  <span className="text-green-400 font-bold mr-2">❯</span>
-                  <input
-                    type="text"
-                    value={proxAIInput}
-                    onChange={(e) => setProxAIInput(e.target.value)}
-                    className="flex-1 bg-transparent outline-none text-green-300 placeholder-gray-600 font-mono"
-                    placeholder="Initialize protocol or query database..."
-                    autoFocus
-                  />
-                  <button
-                    type="submit"
-                    className="ml-2 text-gray-500 hover:text-green-400 transition-colors"
-                    title="Execute"
-                  >
-                    <Send className="w-4 h-4" />
-                  </button>
-                </div>
+              <form onSubmit={handleProxAISubmit} className="mt-auto relative">
+                <div className="absolute left-4 top-1/2 -translate-y-1/2 text-green-500 animate-pulse">❯</div>
+                <input
+                  type="text"
+                  value={proxAIInput}
+                  onChange={(e) => setProxAIInput(e.target.value)}
+                  className="w-full bg-black/50 border border-gray-700 rounded-lg py-3 pl-10 pr-12 text-green-400 placeholder-gray-600 focus:outline-none focus:border-green-500 focus:ring-1 focus:ring-green-500/50 transition-all font-mono"
+                  placeholder="Enter command or query..."
+                  autoFocus
+                />
+                <button type="submit" className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-green-400 transition-colors">
+                  <Send size={18} />
+                </button>
               </form>
             </div>
           ) : (
             <>
-              <div className="mb-4 flex items-center space-x-2">
-                <span className="text-green-400 font-bold">preshak@hackbox</span>
-                <span className="text-gray-400">:</span>
+              {/* Command Prompt Line */}
+              <div className="flex items-center gap-2 mb-6 text-sm md:text-base font-mono opacity-80">
+                <span className="text-green-500 font-bold">➜</span>
                 <span className="text-blue-400">~</span>
                 <span className="text-gray-400">$</span>
-                <span className="text-gray-300 ml-2">{command}</span>
-                <span className="animate-pulse">_</span>
+                <span className="text-gray-200 typing-effect">{command}</span>
               </div>
+
+              {/* Dynamic Content */}
               {skillExample ? (
-                <div className="space-y-4">
-                  <div className="relative">
-                    <pre className="bg-gray-900 p-4 rounded-lg overflow-x-auto shadow-inner border border-gray-700 text-sm leading-relaxed custom-scrollbar">
-                      {skillExample}
-                    </pre>
+                <div className="animate-fade-in relative group">
+                  <div className="absolute top-0 right-0 p-2 z-10">
                     <button
-                      onClick={handleCopy}
-                      className="absolute top-2 right-2 p-2 bg-gray-700 rounded hover:bg-gray-600 transition-colors border border-gray-600"
-                      title="Copy code"
+                      onClick={() => {
+                        navigator.clipboard.writeText(skillExample);
+                        setCopied(true);
+                        setTimeout(() => setCopied(false), 2000);
+                      }}
+                      className="p-2 bg-gray-800 rounded hover:bg-gray-700 text-gray-400 hover:text-white transition-colors border border-gray-700"
                     >
-                      {copied ? (
-                        <Check className="w-4 h-4 text-green-400" />
-                      ) : (
-                        <Copy className="w-4 h-4 text-gray-300" />
-                      )}
+                      {copied ? <Check size={16} className="text-green-500" /> : <Copy size={16} />}
+                    </button>
+                    <button
+                      onClick={() => setSkillExample("")}
+                      className="ml-2 p-2 bg-gray-800 rounded hover:bg-gray-700 text-gray-400 hover:text-white transition-colors border border-gray-700"
+                    >
+                      <X size={16} />
                     </button>
                   </div>
-                  <button
-                    onClick={() => setSkillExample("")}
-                    className="flex items-center text-blue-400 hover:text-blue-300 transition-colors px-4 py-2 bg-gray-700 rounded-lg hover:bg-gray-600"
-                  >
-                    <ArrowLeft className="w-4 h-4 mr-2" /> Back to Skills
-                  </button>
+                  <pre className="bg-[#1e1e1e] p-4 md:p-6 rounded-lg overflow-x-auto text-sm md:text-base border-l-4 border-green-500 shadow-xl font-mono leading-relaxed text-gray-300">
+                    <code>{skillExample}</code>
+                  </pre>
+                  <div className="mt-2 text-xs text-gray-500 flex items-center gap-2">
+                    <div className="w-2 h-2 rounded-full bg-yellow-500"></div>
+                    Snippet loaded from memory block 0x84F2
+                  </div>
                 </div>
               ) : (
-                sections[currentSection].content
+                sections[currentSection as keyof typeof sections].content
               )}
             </>
           )}
         </div>
       </div>
-      <div className="fixed bottom-4 left-1/2 transform -translate-x-1/2 glass px-6 py-3 rounded-2xl flex space-x-4 shadow-2xl z-50">
-        {Object.entries(sections).map(([key, { icon }]) => (
-          <button
-            key={key}
-            onClick={() => handleSectionChange(key as keyof typeof sections)}
-            className={`p-3 rounded-xl transition-all duration-300 ease-in-out flex items-center justify-center transform hover:scale-110 ${
-              currentSection === key
-                ? 'bg-terminal-green text-white shadow-lg scale-110'
-                : 'bg-transparent text-gray-400 hover:text-white hover:bg-white/10'
-            }`}
-            title={key.charAt(0).toUpperCase() + key.slice(1)}
-          >
-            {icon}
-          </button>
-        ))}
+
+      {/* Dock / Navigation */}
+      <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-50">
+        <div className="flex items-center gap-2 md:gap-4 p-2 md:p-3 bg-gray-900/80 backdrop-blur-md border border-white/10 rounded-2xl shadow-2xl ring-1 ring-black/50">
+          {Object.entries(sections).map(([sectionKey, section]) => (
+            <button
+              key={sectionKey}
+              onClick={() => handleSectionChange(sectionKey)}
+              className={`relative p-3 rounded-xl transition-all duration-300 group ${
+                currentSection === sectionKey
+                  ? 'bg-gray-800 text-green-400 shadow-[0_0_15px_rgba(16,185,129,0.3)] scale-110 -translate-y-1'
+                  : 'text-gray-400 hover:text-white hover:bg-gray-800 hover:-translate-y-1'
+              }`}
+            >
+              {section.icon}
+              <span className="absolute -top-10 left-1/2 -translate-x-1/2 bg-gray-900 text-white text-[10px] px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity border border-gray-700 whitespace-nowrap pointer-events-none uppercase tracking-widest font-bold">
+                {sectionKey}
+              </span>
+              {currentSection === sectionKey && (
+                <span className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-1 h-1 bg-green-500 rounded-full"></span>
+              )}
+            </button>
+          ))}
+        </div>
       </div>
     </div>
   )
