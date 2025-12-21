@@ -1,0 +1,252 @@
+
+> my-app@0.1.0 start /app
+> react-scripts start
+
+(node:6055) [DEP_WEBPACK_DEV_SERVER_ON_AFTER_SETUP_MIDDLEWARE] DeprecationWarning: 'onAfterSetupMiddleware' option is deprecated. Please use the 'setupMiddlewares' option.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+(node:6055) [DEP_WEBPACK_DEV_SERVER_ON_BEFORE_SETUP_MIDDLEWARE] DeprecationWarning: 'onBeforeSetupMiddleware' option is deprecated. Please use the 'setupMiddlewares' option.
+Starting the development server...
+
+Compiled successfully!
+
+You can now view my-app in the browser.
+
+  Local:            http://localhost:3000
+  On Your Network:  http://192.168.0.2:3000
+
+Note that the development build is not optimized.
+To create a production build, use npm run build.
+
+webpack compiled successfully
+ERROR in src/App.a11y.test.tsx:19:53
+TS2339: Property 'toBeInTheDocument' does not exist on type 'JestMatchers<HTMLElement>'.
+    17 |
+    18 |   // Window controls
+  > 19 |   expect(screen.getByLabelText(/Reload terminal/i)).toBeInTheDocument();
+       |                                                     ^^^^^^^^^^^^^^^^^
+    20 |
+    21 |   // We have multiple buttons with "Maximize window" label (one in traffic lights, one in header)
+    22 |   const maximizeButtons = screen.getAllByLabelText(/Maximize window/i);
+
+ERROR in src/App.a11y.test.tsx:36:22
+TS2339: Property 'toBeInTheDocument' does not exist on type 'JestMatchers<HTMLElement>'.
+    34 |   // Dock buttons
+    35 |   const homeButton = screen.getByLabelText(/Navigate to home/i);
+  > 36 |   expect(homeButton).toBeInTheDocument();
+       |                      ^^^^^^^^^^^^^^^^^
+    37 |
+    38 |   const aboutButton = screen.getByLabelText(/Navigate to about/i);
+    39 |   expect(aboutButton).toBeInTheDocument();
+
+ERROR in src/App.a11y.test.tsx:39:23
+TS2339: Property 'toBeInTheDocument' does not exist on type 'JestMatchers<HTMLElement>'.
+    37 |
+    38 |   const aboutButton = screen.getByLabelText(/Navigate to about/i);
+  > 39 |   expect(aboutButton).toBeInTheDocument();
+       |                       ^^^^^^^^^^^^^^^^^
+    40 |
+    41 |   const skillsButton = screen.getByLabelText(/Navigate to skills/i);
+    42 |   expect(skillsButton).toBeInTheDocument();
+
+ERROR in src/App.a11y.test.tsx:42:24
+TS2339: Property 'toBeInTheDocument' does not exist on type 'JestMatchers<HTMLElement>'.
+    40 |
+    41 |   const skillsButton = screen.getByLabelText(/Navigate to skills/i);
+  > 42 |   expect(skillsButton).toBeInTheDocument();
+       |                        ^^^^^^^^^^^^^^^^^
+    43 |
+    44 |   const projectsButton = screen.getByLabelText(/Navigate to projects/i);
+    45 |   expect(projectsButton).toBeInTheDocument();
+
+ERROR in src/App.a11y.test.tsx:45:26
+TS2339: Property 'toBeInTheDocument' does not exist on type 'JestMatchers<HTMLElement>'.
+    43 |
+    44 |   const projectsButton = screen.getByLabelText(/Navigate to projects/i);
+  > 45 |   expect(projectsButton).toBeInTheDocument();
+       |                          ^^^^^^^^^^^^^^^^^
+    46 |
+    47 |   const contactButton = screen.getByLabelText(/Navigate to contact/i);
+    48 |   expect(contactButton).toBeInTheDocument();
+
+ERROR in src/App.a11y.test.tsx:48:25
+TS2339: Property 'toBeInTheDocument' does not exist on type 'JestMatchers<HTMLElement>'.
+    46 |
+    47 |   const contactButton = screen.getByLabelText(/Navigate to contact/i);
+  > 48 |   expect(contactButton).toBeInTheDocument();
+       |                         ^^^^^^^^^^^^^^^^^
+    49 |
+    50 |   const proxaiButton = screen.getByLabelText(/Navigate to proxai/i);
+    51 |   expect(proxaiButton).toBeInTheDocument();
+
+ERROR in src/App.a11y.test.tsx:51:24
+TS2339: Property 'toBeInTheDocument' does not exist on type 'JestMatchers<HTMLElement>'.
+    49 |
+    50 |   const proxaiButton = screen.getByLabelText(/Navigate to proxai/i);
+  > 51 |   expect(proxaiButton).toBeInTheDocument();
+       |                        ^^^^^^^^^^^^^^^^^
+    52 | });
+    53 |
+    54 | test('ProxAI accessibility', () => {
+
+ERROR in src/App.a11y.test.tsx:62:58
+TS2339: Property 'toBeInTheDocument' does not exist on type 'JestMatchers<HTMLElement>'.
+    60 |
+    61 |   // Now input should be visible
+  > 62 |   expect(screen.getByLabelText(/ProxAI Command Input/i)).toBeInTheDocument();
+       |                                                          ^^^^^^^^^^^^^^^^^
+    63 |   expect(screen.getByLabelText(/Send command/i)).toBeInTheDocument();
+    64 | });
+    65 |
+
+ERROR in src/App.a11y.test.tsx:63:50
+TS2339: Property 'toBeInTheDocument' does not exist on type 'JestMatchers<HTMLElement>'.
+    61 |   // Now input should be visible
+    62 |   expect(screen.getByLabelText(/ProxAI Command Input/i)).toBeInTheDocument();
+  > 63 |   expect(screen.getByLabelText(/Send command/i)).toBeInTheDocument();
+       |                                                  ^^^^^^^^^^^^^^^^^
+    64 | });
+    65 |
+    66 | test('Contact accessibility', () => {
+
+ERROR in src/App.test.tsx:8:26
+TS2339: Property 'toBeInTheDocument' does not exist on type 'JestMatchers<HTMLElement>'.
+     6 |   render(<App />);
+     7 |   const headingElement = screen.getByRole('heading', { name: /Preshak/i });
+  >  8 |   expect(headingElement).toBeInTheDocument();
+       |                          ^^^^^^^^^^^^^^^^^
+     9 | });
+    10 |
+
+Compiling...
+Compiled successfully!
+webpack compiled successfully
+ERROR in src/App.a11y.test.tsx:20:53
+TS2339: Property 'toBeInTheDocument' does not exist on type 'JestMatchers<HTMLElement>'.
+    18 |
+    19 |   // Window controls
+  > 20 |   expect(screen.getByLabelText(/Reload terminal/i)).toBeInTheDocument();
+       |                                                     ^^^^^^^^^^^^^^^^^
+    21 |
+    22 |   // We have multiple buttons with "Maximize window" label (one in traffic lights, one in header)
+    23 |   const maximizeButtons = screen.getAllByLabelText(/Maximize window/i);
+
+ERROR in src/App.a11y.test.tsx:37:22
+TS2339: Property 'toBeInTheDocument' does not exist on type 'JestMatchers<HTMLElement>'.
+    35 |   // Dock buttons
+    36 |   const homeButton = screen.getByLabelText(/Navigate to home/i);
+  > 37 |   expect(homeButton).toBeInTheDocument();
+       |                      ^^^^^^^^^^^^^^^^^
+    38 |
+    39 |   const aboutButton = screen.getByLabelText(/Navigate to about/i);
+    40 |   expect(aboutButton).toBeInTheDocument();
+
+ERROR in src/App.a11y.test.tsx:40:23
+TS2339: Property 'toBeInTheDocument' does not exist on type 'JestMatchers<HTMLElement>'.
+    38 |
+    39 |   const aboutButton = screen.getByLabelText(/Navigate to about/i);
+  > 40 |   expect(aboutButton).toBeInTheDocument();
+       |                       ^^^^^^^^^^^^^^^^^
+    41 |
+    42 |   const skillsButton = screen.getByLabelText(/Navigate to skills/i);
+    43 |   expect(skillsButton).toBeInTheDocument();
+
+ERROR in src/App.a11y.test.tsx:43:24
+TS2339: Property 'toBeInTheDocument' does not exist on type 'JestMatchers<HTMLElement>'.
+    41 |
+    42 |   const skillsButton = screen.getByLabelText(/Navigate to skills/i);
+  > 43 |   expect(skillsButton).toBeInTheDocument();
+       |                        ^^^^^^^^^^^^^^^^^
+    44 |
+    45 |   const projectsButton = screen.getByLabelText(/Navigate to projects/i);
+    46 |   expect(projectsButton).toBeInTheDocument();
+
+ERROR in src/App.a11y.test.tsx:46:26
+TS2339: Property 'toBeInTheDocument' does not exist on type 'JestMatchers<HTMLElement>'.
+    44 |
+    45 |   const projectsButton = screen.getByLabelText(/Navigate to projects/i);
+  > 46 |   expect(projectsButton).toBeInTheDocument();
+       |                          ^^^^^^^^^^^^^^^^^
+    47 |
+    48 |   const contactButton = screen.getByLabelText(/Navigate to contact/i);
+    49 |   expect(contactButton).toBeInTheDocument();
+
+ERROR in src/App.a11y.test.tsx:49:25
+TS2339: Property 'toBeInTheDocument' does not exist on type 'JestMatchers<HTMLElement>'.
+    47 |
+    48 |   const contactButton = screen.getByLabelText(/Navigate to contact/i);
+  > 49 |   expect(contactButton).toBeInTheDocument();
+       |                         ^^^^^^^^^^^^^^^^^
+    50 |
+    51 |   const proxaiButton = screen.getByLabelText(/Navigate to proxai/i);
+    52 |   expect(proxaiButton).toBeInTheDocument();
+
+ERROR in src/App.a11y.test.tsx:52:24
+TS2339: Property 'toBeInTheDocument' does not exist on type 'JestMatchers<HTMLElement>'.
+    50 |
+    51 |   const proxaiButton = screen.getByLabelText(/Navigate to proxai/i);
+  > 52 |   expect(proxaiButton).toBeInTheDocument();
+       |                        ^^^^^^^^^^^^^^^^^
+    53 | });
+    54 |
+    55 | test('ProxAI accessibility', () => {
+
+ERROR in src/App.a11y.test.tsx:63:58
+TS2339: Property 'toBeInTheDocument' does not exist on type 'JestMatchers<HTMLElement>'.
+    61 |
+    62 |   // Now input should be visible
+  > 63 |   expect(screen.getByLabelText(/ProxAI Command Input/i)).toBeInTheDocument();
+       |                                                          ^^^^^^^^^^^^^^^^^
+    64 |   expect(screen.getByLabelText(/Send command/i)).toBeInTheDocument();
+    65 | });
+    66 |
+
+ERROR in src/App.a11y.test.tsx:64:50
+TS2339: Property 'toBeInTheDocument' does not exist on type 'JestMatchers<HTMLElement>'.
+    62 |   // Now input should be visible
+    63 |   expect(screen.getByLabelText(/ProxAI Command Input/i)).toBeInTheDocument();
+  > 64 |   expect(screen.getByLabelText(/Send command/i)).toBeInTheDocument();
+       |                                                  ^^^^^^^^^^^^^^^^^
+    65 | });
+    66 |
+    67 | test('Contact accessibility', () => {
+
+ERROR in src/App.test.tsx:8:26
+TS2339: Property 'toBeInTheDocument' does not exist on type 'JestMatchers<HTMLElement>'.
+     6 |   render(<App />);
+     7 |   const headingElement = screen.getByRole('heading', { name: /Preshak/i });
+  >  8 |   expect(headingElement).toBeInTheDocument();
+       |                          ^^^^^^^^^^^^^^^^^
+     9 | });
+    10 |
+
+Compiling...
+Compiled successfully!
+webpack compiled successfully
+Compiling...
+ERROR in src/App.a11y.test.tsx
+TS1208: 'App.a11y.test.tsx' cannot be compiled under '--isolatedModules' because it is considered a global script file. Add an import, export, or an empty 'export {}' statement to make it a module.
+
+ERROR in src/App.test.tsx:8:26
+TS2339: Property 'toBeInTheDocument' does not exist on type 'JestMatchers<HTMLElement>'.
+     6 |   render(<App />);
+     7 |   const headingElement = screen.getByRole('heading', { name: /Preshak/i });
+  >  8 |   expect(headingElement).toBeInTheDocument();
+       |                          ^^^^^^^^^^^^^^^^^
+     9 | });
+    10 |
+
+Compiled successfully!
+webpack compiled successfully
+ERROR in src/App.test.tsx:8:26
+TS2339: Property 'toBeInTheDocument' does not exist on type 'JestMatchers<HTMLElement>'.
+     6 |   render(<App />);
+     7 |   const headingElement = screen.getByRole('heading', { name: /Preshak/i });
+  >  8 |   expect(headingElement).toBeInTheDocument();
+       |                          ^^^^^^^^^^^^^^^^^
+     9 | });
+    10 |
+
+Compiling...
+Compiled successfully!
+webpack compiled successfully
+No issues found.
