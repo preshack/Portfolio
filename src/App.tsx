@@ -537,9 +537,9 @@ Running: Linux 4.X`
         <div className="flex items-center justify-between px-4 py-3 bg-[#111] border-b border-gray-800 shrink-0 cursor-grab active:cursor-grabbing">
           <div className="flex items-center gap-2">
             <div className="flex gap-2 mr-4 group">
-              <button onClick={() => window.location.reload()} className="w-3 h-3 rounded-full bg-red-500/80 hover:bg-red-500 transition-colors" />
-              <button onClick={() => setIsMaximized(!isMaximized)} className="w-3 h-3 rounded-full bg-yellow-500/80 hover:bg-yellow-500 transition-colors" />
-              <button className="w-3 h-3 rounded-full bg-green-500/80 hover:bg-green-500 transition-colors" />
+              <button aria-label="Reload terminal" onClick={() => window.location.reload()} className="w-3 h-3 rounded-full bg-red-500/80 hover:bg-red-500 transition-colors" />
+              <button aria-label={isMaximized ? "Restore window" : "Maximize window"} onClick={() => setIsMaximized(!isMaximized)} className="w-3 h-3 rounded-full bg-yellow-500/80 hover:bg-yellow-500 transition-colors" />
+              <div aria-hidden="true" className="w-3 h-3 rounded-full bg-green-500/80 transition-colors" />
             </div>
             <div className="flex items-center text-xs md:text-sm text-gray-500 font-semibold gap-2">
               <Terminal size={14} className="text-green-500" />
@@ -547,7 +547,7 @@ Running: Linux 4.X`
               <span className="md:hidden">Terminal</span>
             </div>
           </div>
-          <button onClick={() => setIsMaximized(!isMaximized)} className="text-gray-500 hover:text-white transition-colors">
+          <button aria-label={isMaximized ? "Minimize window" : "Maximize window"} onClick={() => setIsMaximized(!isMaximized)} className="text-gray-500 hover:text-white transition-colors">
             {isMaximized ? <Minimize2 size={16} /> : <Maximize2 size={16} />}
           </button>
         </div>
@@ -574,13 +574,14 @@ Running: Linux 4.X`
                 <div className="absolute left-4 top-1/2 -translate-y-1/2 text-green-500 animate-pulse">❯</div>
                 <input
                   type="text"
+                  aria-label="ProxAI command input"
                   value={proxAIInput}
                   onChange={(e) => setProxAIInput(e.target.value)}
                   className="w-full bg-black/50 border border-gray-700 rounded-lg py-3 pl-10 pr-12 text-green-400 placeholder-gray-600 focus:outline-none focus:border-green-500 focus:ring-1 focus:ring-green-500/50 transition-all font-mono"
                   placeholder="Enter command or query..."
                   autoFocus
                 />
-                <button type="submit" className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-green-400 transition-colors">
+                <button type="submit" aria-label="Send command" className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-green-400 transition-colors">
                   <Send size={18} />
                 </button>
               </form>
@@ -639,6 +640,7 @@ Running: Linux 4.X`
             <button
               key={sectionKey}
               onClick={() => handleSectionChange(sectionKey)}
+              aria-label={sectionKey}
               className={`relative p-3 rounded-xl transition-all duration-300 group ${
                 currentSection === sectionKey
                   ? 'bg-gray-800 text-green-400 shadow-[0_0_15px_rgba(16,185,129,0.3)] scale-110 -translate-y-1'
