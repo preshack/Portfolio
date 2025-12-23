@@ -537,9 +537,24 @@ Running: Linux 4.X`
         <div className="flex items-center justify-between px-4 py-3 bg-[#111] border-b border-gray-800 shrink-0 cursor-grab active:cursor-grabbing">
           <div className="flex items-center gap-2">
             <div className="flex gap-2 mr-4 group">
-              <button onClick={() => window.location.reload()} className="w-3 h-3 rounded-full bg-red-500/80 hover:bg-red-500 transition-colors" />
-              <button onClick={() => setIsMaximized(!isMaximized)} className="w-3 h-3 rounded-full bg-yellow-500/80 hover:bg-yellow-500 transition-colors" />
-              <button className="w-3 h-3 rounded-full bg-green-500/80 hover:bg-green-500 transition-colors" />
+              <button
+                onClick={() => window.location.reload()}
+                className="w-3 h-3 rounded-full bg-red-500/80 hover:bg-red-500 transition-colors"
+                aria-label="Reload terminal"
+                title="Reload Terminal"
+              />
+              <button
+                onClick={() => setIsMaximized(!isMaximized)}
+                className="w-3 h-3 rounded-full bg-yellow-500/80 hover:bg-yellow-500 transition-colors"
+                aria-label={isMaximized ? "Restore terminal size" : "Maximize terminal"}
+                title={isMaximized ? "Restore" : "Maximize"}
+              />
+              <button
+                className="w-3 h-3 rounded-full bg-green-500/80 hover:bg-green-500 transition-colors"
+                aria-label="System status stable"
+                title="System Status: Stable"
+                disabled
+              />
             </div>
             <div className="flex items-center text-xs md:text-sm text-gray-500 font-semibold gap-2">
               <Terminal size={14} className="text-green-500" />
@@ -547,7 +562,12 @@ Running: Linux 4.X`
               <span className="md:hidden">Terminal</span>
             </div>
           </div>
-          <button onClick={() => setIsMaximized(!isMaximized)} className="text-gray-500 hover:text-white transition-colors">
+          <button
+            onClick={() => setIsMaximized(!isMaximized)}
+            className="text-gray-500 hover:text-white transition-colors"
+            aria-label={isMaximized ? "Restore terminal size" : "Maximize terminal"}
+            title={isMaximized ? "Restore" : "Maximize"}
+          >
             {isMaximized ? <Minimize2 size={16} /> : <Maximize2 size={16} />}
           </button>
         </div>
@@ -578,9 +598,15 @@ Running: Linux 4.X`
                   onChange={(e) => setProxAIInput(e.target.value)}
                   className="w-full bg-black/50 border border-gray-700 rounded-lg py-3 pl-10 pr-12 text-green-400 placeholder-gray-600 focus:outline-none focus:border-green-500 focus:ring-1 focus:ring-green-500/50 transition-all font-mono"
                   placeholder="Enter command or query..."
+                  aria-label="ProxAI command input"
                   autoFocus
                 />
-                <button type="submit" className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-green-400 transition-colors">
+                <button
+                  type="submit"
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-green-400 transition-colors"
+                  aria-label="Send command"
+                  title="Send Command"
+                >
                   <Send size={18} />
                 </button>
               </form>
