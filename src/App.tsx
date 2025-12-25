@@ -537,9 +537,9 @@ Running: Linux 4.X`
         <div className="flex items-center justify-between px-4 py-3 bg-[#111] border-b border-gray-800 shrink-0 cursor-grab active:cursor-grabbing">
           <div className="flex items-center gap-2">
             <div className="flex gap-2 mr-4 group">
-              <button onClick={() => window.location.reload()} className="w-3 h-3 rounded-full bg-red-500/80 hover:bg-red-500 transition-colors" />
-              <button onClick={() => setIsMaximized(!isMaximized)} className="w-3 h-3 rounded-full bg-yellow-500/80 hover:bg-yellow-500 transition-colors" />
-              <button className="w-3 h-3 rounded-full bg-green-500/80 hover:bg-green-500 transition-colors" />
+              <button aria-label="Reload terminal" onClick={() => window.location.reload()} className="w-3 h-3 rounded-full bg-red-500/80 hover:bg-red-500 transition-colors focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-red-500 focus-visible:ring-offset-black outline-none" />
+              <button aria-label={isMaximized ? "Minimize terminal" : "Maximize terminal"} onClick={() => setIsMaximized(!isMaximized)} className="w-3 h-3 rounded-full bg-yellow-500/80 hover:bg-yellow-500 transition-colors focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-yellow-500 focus-visible:ring-offset-black outline-none" />
+              <button aria-label="Maximize terminal" className="w-3 h-3 rounded-full bg-green-500/80 hover:bg-green-500 transition-colors focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-green-500 focus-visible:ring-offset-black outline-none" />
             </div>
             <div className="flex items-center text-xs md:text-sm text-gray-500 font-semibold gap-2">
               <Terminal size={14} className="text-green-500" />
@@ -547,7 +547,7 @@ Running: Linux 4.X`
               <span className="md:hidden">Terminal</span>
             </div>
           </div>
-          <button onClick={() => setIsMaximized(!isMaximized)} className="text-gray-500 hover:text-white transition-colors">
+          <button aria-label={isMaximized ? "Minimize terminal" : "Maximize terminal"} onClick={() => setIsMaximized(!isMaximized)} className="text-gray-500 hover:text-white transition-colors focus-visible:ring-2 focus-visible:ring-green-500 rounded outline-none">
             {isMaximized ? <Minimize2 size={16} /> : <Maximize2 size={16} />}
           </button>
         </div>
@@ -639,7 +639,8 @@ Running: Linux 4.X`
             <button
               key={sectionKey}
               onClick={() => handleSectionChange(sectionKey)}
-              className={`relative p-3 rounded-xl transition-all duration-300 group ${
+              aria-label={`Navigate to ${sectionKey} section`}
+              className={`relative p-3 rounded-xl transition-all duration-300 group focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-black focus-visible:ring-green-500 outline-none ${
                 currentSection === sectionKey
                   ? 'bg-gray-800 text-green-400 shadow-[0_0_15px_rgba(16,185,129,0.3)] scale-110 -translate-y-1'
                   : 'text-gray-400 hover:text-white hover:bg-gray-800 hover:-translate-y-1'
