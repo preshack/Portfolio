@@ -44,7 +44,7 @@ const SkillCard = ({ name, icon: Icon, level, category, onClick }: any) => (
       <Icon size={40} />
     </div>
     <div className="flex items-center gap-2 mb-2">
-      <Icon className="text-green-400 group-hover:text-green-300" size={18} />
+      <Icon className="text-green-400 group-hover:text-green-300" size={18} aria-hidden="true" />
       <span className="font-bold text-gray-200 group-hover:text-white text-sm md:text-base">{name}</span>
     </div>
     <div className="text-xs text-gray-500 font-mono mb-2">{category}</div>
@@ -115,9 +115,10 @@ const ContactRow = ({ label, value, icon: Icon, href, copyable = false }: any) =
       {copyable ? (
         <button
           onClick={handleCopy}
-          className="p-2 text-gray-500 hover:text-green-400 transition-colors"
+          aria-label={`Copy ${label}`}
+          className="p-2 text-gray-500 hover:text-green-400 transition-colors focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-black focus-visible:ring-green-500 rounded"
         >
-          {copied ? <Check size={14} /> : <Copy size={14} />}
+          {copied ? <Check size={14} aria-hidden="true" /> : <Copy size={14} aria-hidden="true" />}
         </button>
       ) : (
         <ExternalLink size={14} className="text-gray-500 group-hover:text-green-400 transition-colors" />
@@ -537,18 +538,33 @@ Running: Linux 4.X`
         <div className="flex items-center justify-between px-4 py-3 bg-[#111] border-b border-gray-800 shrink-0 cursor-grab active:cursor-grabbing">
           <div className="flex items-center gap-2">
             <div className="flex gap-2 mr-4 group">
-              <button onClick={() => window.location.reload()} className="w-3 h-3 rounded-full bg-red-500/80 hover:bg-red-500 transition-colors" />
-              <button onClick={() => setIsMaximized(!isMaximized)} className="w-3 h-3 rounded-full bg-yellow-500/80 hover:bg-yellow-500 transition-colors" />
-              <button className="w-3 h-3 rounded-full bg-green-500/80 hover:bg-green-500 transition-colors" />
+              <button
+                onClick={() => window.location.reload()}
+                aria-label="Close terminal (reload)"
+                className="w-3 h-3 rounded-full bg-red-500/80 hover:bg-red-500 transition-colors focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-black focus-visible:ring-red-500"
+              />
+              <button
+                onClick={() => setIsMaximized(!isMaximized)}
+                aria-label={isMaximized ? "Restore terminal size" : "Maximize terminal"}
+                className="w-3 h-3 rounded-full bg-yellow-500/80 hover:bg-yellow-500 transition-colors focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-black focus-visible:ring-yellow-500"
+              />
+              <button
+                aria-label="Maximize terminal"
+                className="w-3 h-3 rounded-full bg-green-500/80 hover:bg-green-500 transition-colors focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-black focus-visible:ring-green-500"
+              />
             </div>
             <div className="flex items-center text-xs md:text-sm text-gray-500 font-semibold gap-2">
-              <Terminal size={14} className="text-green-500" />
+              <Terminal size={14} className="text-green-500" aria-hidden="true" />
               <span className="hidden md:inline">preshak@hackbox: ~</span>
               <span className="md:hidden">Terminal</span>
             </div>
           </div>
-          <button onClick={() => setIsMaximized(!isMaximized)} className="text-gray-500 hover:text-white transition-colors">
-            {isMaximized ? <Minimize2 size={16} /> : <Maximize2 size={16} />}
+          <button
+            onClick={() => setIsMaximized(!isMaximized)}
+            aria-label={isMaximized ? "Restore terminal size" : "Maximize terminal"}
+            className="text-gray-500 hover:text-white transition-colors focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-black focus-visible:ring-green-500 rounded"
+          >
+            {isMaximized ? <Minimize2 size={16} aria-hidden="true" /> : <Maximize2 size={16} aria-hidden="true" />}
           </button>
         </div>
 
@@ -580,8 +596,12 @@ Running: Linux 4.X`
                   placeholder="Enter command or query..."
                   autoFocus
                 />
-                <button type="submit" className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-green-400 transition-colors">
-                  <Send size={18} />
+                <button
+                  type="submit"
+                  aria-label="Send command"
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-green-400 transition-colors focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-black focus-visible:ring-green-500 rounded"
+                >
+                  <Send size={18} aria-hidden="true" />
                 </button>
               </form>
             </div>
@@ -598,22 +618,24 @@ Running: Linux 4.X`
               {/* Dynamic Content */}
               {skillExample ? (
                 <div className="animate-fade-in relative group">
-                  <div className="absolute top-0 right-0 p-2 z-10">
+                  <div className="absolute top-0 right-0 p-2 z-10 flex">
                     <button
                       onClick={() => {
                         navigator.clipboard.writeText(skillExample);
                         setCopied(true);
                         setTimeout(() => setCopied(false), 2000);
                       }}
-                      className="p-2 bg-gray-800 rounded hover:bg-gray-700 text-gray-400 hover:text-white transition-colors border border-gray-700"
+                      aria-label="Copy code snippet"
+                      className="p-2 bg-gray-800 rounded hover:bg-gray-700 text-gray-400 hover:text-white transition-colors border border-gray-700 focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-black focus-visible:ring-green-500"
                     >
-                      {copied ? <Check size={16} className="text-green-500" /> : <Copy size={16} />}
+                      {copied ? <Check size={16} className="text-green-500" aria-hidden="true" /> : <Copy size={16} aria-hidden="true" />}
                     </button>
                     <button
                       onClick={() => setSkillExample("")}
-                      className="ml-2 p-2 bg-gray-800 rounded hover:bg-gray-700 text-gray-400 hover:text-white transition-colors border border-gray-700"
+                      aria-label="Close snippet"
+                      className="ml-2 p-2 bg-gray-800 rounded hover:bg-gray-700 text-gray-400 hover:text-white transition-colors border border-gray-700 focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-black focus-visible:ring-green-500"
                     >
-                      <X size={16} />
+                      <X size={16} aria-hidden="true" />
                     </button>
                   </div>
                   <pre className="bg-[#1e1e1e] p-4 md:p-6 rounded-lg overflow-x-auto text-sm md:text-base border-l-4 border-green-500 shadow-xl font-mono leading-relaxed text-gray-300">
@@ -639,12 +661,14 @@ Running: Linux 4.X`
             <button
               key={sectionKey}
               onClick={() => handleSectionChange(sectionKey)}
-              className={`relative p-3 rounded-xl transition-all duration-300 group ${
+              aria-label={`Open ${sectionKey} section`}
+              className={`relative p-3 rounded-xl transition-all duration-300 group focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-black focus-visible:ring-green-500 ${
                 currentSection === sectionKey
                   ? 'bg-gray-800 text-green-400 shadow-[0_0_15px_rgba(16,185,129,0.3)] scale-110 -translate-y-1'
                   : 'text-gray-400 hover:text-white hover:bg-gray-800 hover:-translate-y-1'
               }`}
             >
+              {/* Note: Icon is cloned or passed, assuming it's accessible or decorative */}
               {section.icon}
               <span className="absolute -top-10 left-1/2 -translate-x-1/2 bg-gray-900 text-white text-[10px] px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity border border-gray-700 whitespace-nowrap pointer-events-none uppercase tracking-widest font-bold">
                 {sectionKey}
