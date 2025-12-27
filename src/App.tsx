@@ -90,38 +90,59 @@ const ContactRow = ({ label, value, icon: Icon, href, copyable = false }: any) =
   const [copied, setCopied] = useState(false);
 
   const handleCopy = (e: any) => {
-    e.preventDefault();
+    // Prevent default not needed as button is now outside anchor
     navigator.clipboard.writeText(value);
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
   };
+
+  const content = (
+    <div className="flex items-center gap-3 overflow-hidden min-w-0">
+      <div className="p-2 bg-black/30 rounded-md text-green-400 group-hover:text-white transition-colors">
+        <Icon size={18} />
+      </div>
+      <div className="min-w-0">
+        <div className="text-[10px] text-gray-500 uppercase tracking-wider font-semibold">{label}</div>
+        <div className="text-sm text-gray-300 font-mono truncate">{value}</div>
+      </div>
+    </div>
+  );
+
+  const containerClasses = "flex items-center justify-between p-3 bg-white/5 border border-white/5 hover:bg-white/10 hover:border-green-500/30 rounded-lg group transition-all w-full";
+
+  if (copyable) {
+    return (
+      <div className={containerClasses}>
+        <a
+          href={href}
+          target={href.startsWith('http') ? "_blank" : undefined}
+          rel="noopener noreferrer"
+          className="flex-1 min-w-0 flex items-center justify-between mr-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green-500 rounded"
+        >
+          {content}
+        </a>
+        <button
+          onClick={handleCopy}
+          aria-label={`Copy ${label}`}
+          className="p-2 text-gray-500 hover:text-green-400 transition-colors shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green-500 rounded"
+        >
+          {copied ? <Check size={14} /> : <Copy size={14} />}
+        </button>
+      </div>
+    );
+  }
 
   return (
     <a
       href={href}
       target={href.startsWith('http') ? "_blank" : undefined}
       rel="noopener noreferrer"
-      className="flex items-center justify-between p-3 bg-white/5 border border-white/5 hover:bg-white/10 hover:border-green-500/30 rounded-lg group transition-all"
+      className={`${containerClasses} focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green-500`}
     >
-      <div className="flex items-center gap-3 overflow-hidden">
-        <div className="p-2 bg-black/30 rounded-md text-green-400 group-hover:text-white transition-colors">
-          <Icon size={18} />
-        </div>
-        <div className="min-w-0">
-          <div className="text-[10px] text-gray-500 uppercase tracking-wider font-semibold">{label}</div>
-          <div className="text-sm text-gray-300 font-mono truncate">{value}</div>
-        </div>
+      <div className="flex items-center justify-between w-full">
+        {content}
+        <ExternalLink size={14} className="text-gray-500 group-hover:text-green-400 transition-colors ml-2" />
       </div>
-      {copyable ? (
-        <button
-          onClick={handleCopy}
-          className="p-2 text-gray-500 hover:text-green-400 transition-colors"
-        >
-          {copied ? <Check size={14} /> : <Copy size={14} />}
-        </button>
-      ) : (
-        <ExternalLink size={14} className="text-gray-500 group-hover:text-green-400 transition-colors" />
-      )}
     </a>
   );
 };
