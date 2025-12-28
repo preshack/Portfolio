@@ -115,7 +115,9 @@ const ContactRow = ({ label, value, icon: Icon, href, copyable = false }: any) =
       {copyable ? (
         <button
           onClick={handleCopy}
-          className="p-2 text-gray-500 hover:text-green-400 transition-colors"
+          className="p-2 text-gray-500 hover:text-green-400 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green-500 rounded"
+          aria-label="Copy to clipboard"
+          title="Copy to clipboard"
         >
           {copied ? <Check size={14} /> : <Copy size={14} />}
         </button>
@@ -537,9 +539,23 @@ Running: Linux 4.X`
         <div className="flex items-center justify-between px-4 py-3 bg-[#111] border-b border-gray-800 shrink-0 cursor-grab active:cursor-grabbing">
           <div className="flex items-center gap-2">
             <div className="flex gap-2 mr-4 group">
-              <button onClick={() => window.location.reload()} className="w-3 h-3 rounded-full bg-red-500/80 hover:bg-red-500 transition-colors" />
-              <button onClick={() => setIsMaximized(!isMaximized)} className="w-3 h-3 rounded-full bg-yellow-500/80 hover:bg-yellow-500 transition-colors" />
-              <button className="w-3 h-3 rounded-full bg-green-500/80 hover:bg-green-500 transition-colors" />
+              <button
+                onClick={() => window.location.reload()}
+                className="w-3 h-3 rounded-full bg-red-500/80 hover:bg-red-500 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-400 focus-visible:ring-offset-1 focus-visible:ring-offset-[#111]"
+                aria-label="Reload Session"
+                title="Reload Session"
+              />
+              <button
+                onClick={() => setIsMaximized(!isMaximized)}
+                className="w-3 h-3 rounded-full bg-yellow-500/80 hover:bg-yellow-500 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-yellow-400 focus-visible:ring-offset-1 focus-visible:ring-offset-[#111]"
+                aria-label={isMaximized ? "Restore" : "Maximize"}
+                title={isMaximized ? "Restore" : "Maximize"}
+              />
+              <button
+                className="w-3 h-3 rounded-full bg-green-500/80 hover:bg-green-500 transition-colors cursor-default"
+                aria-hidden="true"
+                tabIndex={-1}
+              />
             </div>
             <div className="flex items-center text-xs md:text-sm text-gray-500 font-semibold gap-2">
               <Terminal size={14} className="text-green-500" />
@@ -547,7 +563,12 @@ Running: Linux 4.X`
               <span className="md:hidden">Terminal</span>
             </div>
           </div>
-          <button onClick={() => setIsMaximized(!isMaximized)} className="text-gray-500 hover:text-white transition-colors">
+          <button
+            onClick={() => setIsMaximized(!isMaximized)}
+            className="text-gray-500 hover:text-white transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green-500 focus-visible:ring-offset-1 focus-visible:ring-offset-[#111] rounded"
+            aria-label={isMaximized ? "Restore window" : "Maximize window"}
+            title={isMaximized ? "Restore" : "Maximize"}
+          >
             {isMaximized ? <Minimize2 size={16} /> : <Maximize2 size={16} />}
           </button>
         </div>
