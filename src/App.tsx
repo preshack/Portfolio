@@ -639,14 +639,15 @@ Running: Linux 4.X`
             <button
               key={sectionKey}
               onClick={() => handleSectionChange(sectionKey)}
-              className={`relative p-3 rounded-xl transition-all duration-300 group ${
+              aria-label={`Navigate to ${sectionKey} section`}
+              className={`relative p-3 rounded-xl transition-all duration-300 group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green-500 ${
                 currentSection === sectionKey
                   ? 'bg-gray-800 text-green-400 shadow-[0_0_15px_rgba(16,185,129,0.3)] scale-110 -translate-y-1'
                   : 'text-gray-400 hover:text-white hover:bg-gray-800 hover:-translate-y-1'
               }`}
             >
               {section.icon}
-              <span className="absolute -top-10 left-1/2 -translate-x-1/2 bg-gray-900 text-white text-[10px] px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity border border-gray-700 whitespace-nowrap pointer-events-none uppercase tracking-widest font-bold">
+              <span className="absolute -top-10 left-1/2 -translate-x-1/2 bg-gray-900 text-white text-[10px] px-2 py-1 rounded opacity-0 group-hover:opacity-100 group-focus-visible:opacity-100 transition-opacity border border-gray-700 whitespace-nowrap pointer-events-none uppercase tracking-widest font-bold">
                 {sectionKey}
               </span>
               {currentSection === sectionKey && (
