@@ -537,9 +537,32 @@ Running: Linux 4.X`
         <div className="flex items-center justify-between px-4 py-3 bg-[#111] border-b border-gray-800 shrink-0 cursor-grab active:cursor-grabbing">
           <div className="flex items-center gap-2">
             <div className="flex gap-2 mr-4 group">
-              <button onClick={() => window.location.reload()} className="w-3 h-3 rounded-full bg-red-500/80 hover:bg-red-500 transition-colors" />
-              <button onClick={() => setIsMaximized(!isMaximized)} className="w-3 h-3 rounded-full bg-yellow-500/80 hover:bg-yellow-500 transition-colors" />
-              <button className="w-3 h-3 rounded-full bg-green-500/80 hover:bg-green-500 transition-colors" />
+              <button
+                onClick={() => window.location.reload()}
+                className="w-3 h-3 rounded-full bg-red-500/80 hover:bg-red-500 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-500/50"
+                aria-label="Reload terminal"
+                title="Reload"
+              />
+              <button
+                onClick={() => setIsMaximized(!isMaximized)}
+                className="w-3 h-3 rounded-full bg-yellow-500/80 hover:bg-yellow-500 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-yellow-500/50"
+                aria-label={isMaximized ? "Minimize terminal" : "Maximize terminal"}
+                title={isMaximized ? "Minimize" : "Maximize"}
+              />
+              <button
+                className="w-3 h-3 rounded-full bg-green-500/80 hover:bg-green-500 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green-500/50"
+                aria-label="Toggle fullscreen"
+                title="Fullscreen"
+                onClick={() => {
+                   if (!document.fullscreenElement) {
+                      document.documentElement.requestFullscreen().catch((e) => console.log(e));
+                   } else {
+                      if (document.exitFullscreen) {
+                        document.exitFullscreen();
+                      }
+                   }
+                }}
+              />
             </div>
             <div className="flex items-center text-xs md:text-sm text-gray-500 font-semibold gap-2">
               <Terminal size={14} className="text-green-500" />
@@ -547,7 +570,12 @@ Running: Linux 4.X`
               <span className="md:hidden">Terminal</span>
             </div>
           </div>
-          <button onClick={() => setIsMaximized(!isMaximized)} className="text-gray-500 hover:text-white transition-colors">
+          <button
+            onClick={() => setIsMaximized(!isMaximized)}
+            className="text-gray-500 hover:text-white transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green-500"
+            aria-label={isMaximized ? "Minimize terminal" : "Maximize terminal"}
+            title={isMaximized ? "Minimize" : "Maximize"}
+          >
             {isMaximized ? <Minimize2 size={16} /> : <Maximize2 size={16} />}
           </button>
         </div>
