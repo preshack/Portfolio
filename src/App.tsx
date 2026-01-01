@@ -536,10 +536,34 @@ Running: Linux 4.X`
         {/* Title Bar */}
         <div className="flex items-center justify-between px-4 py-3 bg-[#111] border-b border-gray-800 shrink-0 cursor-grab active:cursor-grabbing">
           <div className="flex items-center gap-2">
-            <div className="flex gap-2 mr-4 group">
-              <button onClick={() => window.location.reload()} className="w-3 h-3 rounded-full bg-red-500/80 hover:bg-red-500 transition-colors" />
-              <button onClick={() => setIsMaximized(!isMaximized)} className="w-3 h-3 rounded-full bg-yellow-500/80 hover:bg-yellow-500 transition-colors" />
-              <button className="w-3 h-3 rounded-full bg-green-500/80 hover:bg-green-500 transition-colors" />
+            <div className="flex gap-2 mr-4">
+              <button
+                onClick={() => window.location.reload()}
+                aria-label="Reload system"
+                className="group relative w-3 h-3 rounded-full bg-red-500/80 hover:bg-red-500 transition-colors focus-visible:ring-2 focus-visible:ring-red-400 focus-visible:outline-none"
+              >
+                <span className="absolute top-5 left-1/2 -translate-x-1/2 bg-gray-900 text-gray-200 text-[10px] px-2 py-1 rounded opacity-0 group-hover:opacity-100 group-focus-visible:opacity-100 transition-opacity border border-gray-700 whitespace-nowrap pointer-events-none z-50">
+                  Reload
+                </span>
+              </button>
+              <button
+                onClick={() => setIsMaximized(!isMaximized)}
+                aria-label={isMaximized ? "Minimize terminal" : "Maximize terminal"}
+                className="group relative w-3 h-3 rounded-full bg-yellow-500/80 hover:bg-yellow-500 transition-colors focus-visible:ring-2 focus-visible:ring-yellow-400 focus-visible:outline-none"
+              >
+                <span className="absolute top-5 left-1/2 -translate-x-1/2 bg-gray-900 text-gray-200 text-[10px] px-2 py-1 rounded opacity-0 group-hover:opacity-100 group-focus-visible:opacity-100 transition-opacity border border-gray-700 whitespace-nowrap pointer-events-none z-50">
+                  {isMaximized ? "Minimize" : "Maximize"}
+                </span>
+              </button>
+              <button
+                disabled
+                aria-label="Fullscreen (Disabled)"
+                className="group relative w-3 h-3 rounded-full bg-green-500/80 hover:bg-green-500 transition-colors cursor-not-allowed focus-visible:ring-2 focus-visible:ring-green-400 focus-visible:outline-none"
+              >
+                <span className="absolute top-5 left-1/2 -translate-x-1/2 bg-gray-900 text-gray-200 text-[10px] px-2 py-1 rounded opacity-0 group-hover:opacity-100 group-focus-visible:opacity-100 transition-opacity border border-gray-700 whitespace-nowrap pointer-events-none z-50">
+                  Fullscreen
+                </span>
+              </button>
             </div>
             <div className="flex items-center text-xs md:text-sm text-gray-500 font-semibold gap-2">
               <Terminal size={14} className="text-green-500" />
