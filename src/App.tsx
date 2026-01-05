@@ -115,7 +115,8 @@ const ContactRow = ({ label, value, icon: Icon, href, copyable = false }: any) =
       {copyable ? (
         <button
           onClick={handleCopy}
-          className="p-2 text-gray-500 hover:text-green-400 transition-colors"
+          className="p-2 text-gray-500 hover:text-green-400 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green-500 rounded"
+          aria-label={`Copy ${label}`}
         >
           {copied ? <Check size={14} /> : <Copy size={14} />}
         </button>
@@ -537,9 +538,24 @@ Running: Linux 4.X`
         <div className="flex items-center justify-between px-4 py-3 bg-[#111] border-b border-gray-800 shrink-0 cursor-grab active:cursor-grabbing">
           <div className="flex items-center gap-2">
             <div className="flex gap-2 mr-4 group">
-              <button onClick={() => window.location.reload()} className="w-3 h-3 rounded-full bg-red-500/80 hover:bg-red-500 transition-colors" />
-              <button onClick={() => setIsMaximized(!isMaximized)} className="w-3 h-3 rounded-full bg-yellow-500/80 hover:bg-yellow-500 transition-colors" />
-              <button className="w-3 h-3 rounded-full bg-green-500/80 hover:bg-green-500 transition-colors" />
+              <button
+                onClick={() => window.location.reload()}
+                className="w-3 h-3 rounded-full bg-red-500/80 hover:bg-red-500 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-400"
+                aria-label="Reload terminal"
+                title="Reload terminal"
+              />
+              <button
+                onClick={() => setIsMaximized(!isMaximized)}
+                className="w-3 h-3 rounded-full bg-yellow-500/80 hover:bg-yellow-500 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-yellow-400"
+                aria-label={isMaximized ? "Restore terminal" : "Maximize terminal"}
+                title={isMaximized ? "Restore terminal" : "Maximize terminal"}
+              />
+              <button
+                className="w-3 h-3 rounded-full bg-green-500/80 hover:bg-green-500 transition-colors cursor-default"
+                aria-label="Fullscreen disabled"
+                title="Fullscreen disabled"
+                disabled
+              />
             </div>
             <div className="flex items-center text-xs md:text-sm text-gray-500 font-semibold gap-2">
               <Terminal size={14} className="text-green-500" />
@@ -547,7 +563,12 @@ Running: Linux 4.X`
               <span className="md:hidden">Terminal</span>
             </div>
           </div>
-          <button onClick={() => setIsMaximized(!isMaximized)} className="text-gray-500 hover:text-white transition-colors">
+          <button
+            onClick={() => setIsMaximized(!isMaximized)}
+            className="text-gray-500 hover:text-white transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green-500 rounded"
+            aria-label={isMaximized ? "Restore terminal" : "Maximize terminal"}
+            title={isMaximized ? "Restore terminal" : "Maximize terminal"}
+          >
             {isMaximized ? <Minimize2 size={16} /> : <Maximize2 size={16} />}
           </button>
         </div>
@@ -578,9 +599,14 @@ Running: Linux 4.X`
                   onChange={(e) => setProxAIInput(e.target.value)}
                   className="w-full bg-black/50 border border-gray-700 rounded-lg py-3 pl-10 pr-12 text-green-400 placeholder-gray-600 focus:outline-none focus:border-green-500 focus:ring-1 focus:ring-green-500/50 transition-all font-mono"
                   placeholder="Enter command or query..."
+                  aria-label="ProxAI Command Input"
                   autoFocus
                 />
-                <button type="submit" className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-green-400 transition-colors">
+                <button
+                  type="submit"
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-green-400 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green-500 rounded"
+                  aria-label="Send command"
+                >
                   <Send size={18} />
                 </button>
               </form>
@@ -639,7 +665,8 @@ Running: Linux 4.X`
             <button
               key={sectionKey}
               onClick={() => handleSectionChange(sectionKey)}
-              className={`relative p-3 rounded-xl transition-all duration-300 group ${
+              aria-label={`Switch to ${sectionKey} section`}
+              className={`relative p-3 rounded-xl transition-all duration-300 group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green-500 ${
                 currentSection === sectionKey
                   ? 'bg-gray-800 text-green-400 shadow-[0_0_15px_rgba(16,185,129,0.3)] scale-110 -translate-y-1'
                   : 'text-gray-400 hover:text-white hover:bg-gray-800 hover:-translate-y-1'
