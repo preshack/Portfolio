@@ -1,0 +1,98 @@
+
+> my-app@0.1.0 start /app
+> react-scripts start
+
+(node:4126) [DEP_WEBPACK_DEV_SERVER_ON_AFTER_SETUP_MIDDLEWARE] DeprecationWarning: 'onAfterSetupMiddleware' option is deprecated. Please use the 'setupMiddlewares' option.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+(node:4126) [DEP_WEBPACK_DEV_SERVER_ON_BEFORE_SETUP_MIDDLEWARE] DeprecationWarning: 'onBeforeSetupMiddleware' option is deprecated. Please use the 'setupMiddlewares' option.
+Starting the development server...
+
+Compiled successfully!
+
+You can now view my-app in the browser.
+
+  Local:            http://localhost:3000
+  On Your Network:  http://192.168.0.2:3000
+
+Note that the development build is not optimized.
+To create a production build, use npm run build.
+
+webpack compiled successfully
+ERROR in src/App.test.tsx:8:26
+TS2339: Property 'toBeInTheDocument' does not exist on type 'JestMatchers<HTMLElement>'.
+     6 |   render(<App />);
+     7 |   const headingElement = screen.getByRole('heading', { name: /Preshak/i });
+  >  8 |   expect(headingElement).toBeInTheDocument();
+       |                          ^^^^^^^^^^^^^^^^^
+     9 | });
+    10 |
+
+ERROR in src/App.ux.test.tsx:25:53
+TS2339: Property 'toBeInTheDocument' does not exist on type 'JestMatchers<HTMLElement>'.
+    23 |
+    24 |   // Reload has only one button usually
+  > 25 |   expect(screen.getByLabelText(/Reload terminal/i)).toBeInTheDocument();
+       |                                                     ^^^^^^^^^^^^^^^^^
+    26 |
+    27 |   // Minimize might have multiple (traffic light + toggle when maximized)
+    28 |   // But initially toggle is "Maximize". Yellow traffic light is "Minimize".
+
+ERROR in src/App.ux.test.tsx:41:24
+TS2339: Property 'toBeInTheDocument' does not exist on type 'JestMatchers<HTMLElement>'.
+    39 |   // Check for dock buttons
+    40 |   const proxAiButton = screen.getByLabelText('proxai');
+  > 41 |   expect(proxAiButton).toBeInTheDocument();
+       |                        ^^^^^^^^^^^^^^^^^
+    42 |   expect(screen.getByLabelText('home')).toBeInTheDocument();
+    43 |
+    44 |   // Navigate to ProxAI to reveal the input
+
+ERROR in src/App.ux.test.tsx:42:41
+TS2339: Property 'toBeInTheDocument' does not exist on type 'JestMatchers<HTMLElement>'.
+    40 |   const proxAiButton = screen.getByLabelText('proxai');
+    41 |   expect(proxAiButton).toBeInTheDocument();
+  > 42 |   expect(screen.getByLabelText('home')).toBeInTheDocument();
+       |                                         ^^^^^^^^^^^^^^^^^
+    43 |
+    44 |   // Navigate to ProxAI to reveal the input
+    45 |   fireEvent.click(proxAiButton);
+
+ERROR in src/App.ux.test.tsx:48:58
+TS2339: Property 'toBeInTheDocument' does not exist on type 'JestMatchers<HTMLElement>'.
+    46 |
+    47 |   // Now input should be visible
+  > 48 |   expect(screen.getByLabelText(/ProxAI Command Input/i)).toBeInTheDocument();
+       |                                                          ^^^^^^^^^^^^^^^^^
+    49 | });
+    50 |
+
+Compiling...
+Compiled successfully!
+webpack compiled successfully
+ERROR in src/App.test.tsx:8:26
+TS2339: Property 'toBeInTheDocument' does not exist on type 'JestMatchers<HTMLElement>'.
+     6 |   render(<App />);
+     7 |   const headingElement = screen.getByRole('heading', { name: /Preshak/i });
+  >  8 |   expect(headingElement).toBeInTheDocument();
+       |                          ^^^^^^^^^^^^^^^^^
+     9 | });
+    10 |
+
+Compiling...
+Compiled successfully!
+webpack compiled successfully
+No issues found.
+Compiling...
+Compiled successfully!
+webpack compiled successfully
+Files successfully emitted, waiting for typecheck results...
+Issues checking in progress...
+No issues found.
+Compiling...
+Compiled successfully!
+webpack compiled successfully
+No issues found.
+Compiling...
+Compiled successfully!
+webpack compiled successfully
+No issues found.
