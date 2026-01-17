@@ -537,9 +537,9 @@ Running: Linux 4.X`
         <div className="flex items-center justify-between px-4 py-3 bg-[#111] border-b border-gray-800 shrink-0 cursor-grab active:cursor-grabbing">
           <div className="flex items-center gap-2">
             <div className="flex gap-2 mr-4 group">
-              <button onClick={() => window.location.reload()} className="w-3 h-3 rounded-full bg-red-500/80 hover:bg-red-500 transition-colors" />
-              <button onClick={() => setIsMaximized(!isMaximized)} className="w-3 h-3 rounded-full bg-yellow-500/80 hover:bg-yellow-500 transition-colors" />
-              <button className="w-3 h-3 rounded-full bg-green-500/80 hover:bg-green-500 transition-colors" />
+              <button aria-label="Reload terminal" title="Reload terminal" onClick={() => window.location.reload()} className="w-3 h-3 rounded-full bg-red-500/80 hover:bg-red-500 transition-colors" />
+              <button aria-label="Minimize terminal" title="Minimize terminal" onClick={() => setIsMaximized(false)} className="w-3 h-3 rounded-full bg-yellow-500/80 hover:bg-yellow-500 transition-colors" />
+              <button aria-label="Maximize terminal" title="Maximize terminal" onClick={() => setIsMaximized(true)} className="w-3 h-3 rounded-full bg-green-500/80 hover:bg-green-500 transition-colors" />
             </div>
             <div className="flex items-center text-xs md:text-sm text-gray-500 font-semibold gap-2">
               <Terminal size={14} className="text-green-500" />
@@ -547,7 +547,7 @@ Running: Linux 4.X`
               <span className="md:hidden">Terminal</span>
             </div>
           </div>
-          <button onClick={() => setIsMaximized(!isMaximized)} className="text-gray-500 hover:text-white transition-colors">
+          <button aria-label={isMaximized ? "Minimize terminal" : "Maximize terminal"} title={isMaximized ? "Minimize terminal" : "Maximize terminal"} onClick={() => setIsMaximized(!isMaximized)} className="text-gray-500 hover:text-white transition-colors">
             {isMaximized ? <Minimize2 size={16} /> : <Maximize2 size={16} />}
           </button>
         </div>
@@ -638,6 +638,7 @@ Running: Linux 4.X`
           {Object.entries(sections).map(([sectionKey, section]) => (
             <button
               key={sectionKey}
+              aria-label={sectionKey.charAt(0).toUpperCase() + sectionKey.slice(1)}
               onClick={() => handleSectionChange(sectionKey)}
               className={`relative p-3 rounded-xl transition-all duration-300 group ${
                 currentSection === sectionKey
