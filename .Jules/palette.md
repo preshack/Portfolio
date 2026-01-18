@@ -1,0 +1,3 @@
+## 2025-10-26 - [Duplicate ARIA Labels in Window Controls]
+**Learning:** When implementing accessible window controls (like macOS traffic lights) alongside a separate maximize/minimize toggle, duplicate ARIA labels (e.g., "Maximize terminal") can occur. This is acceptable for controls performing the same action, but testing requires `getAllByLabelText` instead of `getByLabelText` to target specific instances (e.g., `[0]` for the traffic light control).
+**Action:** When adding multiple controls for the same function, verify if they share the same context and label. If so, update tests to handle multiple elements using `getAllBy...` and clarify in comments which element is being targeted.
