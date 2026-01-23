@@ -4,7 +4,7 @@ import {
   Github, Instagram, Facebook, ExternalLink, Copy, Check,
   Minimize2, Maximize2, Send, Bot, MapPin, Flag,
   Folder, FileText, Cpu, Globe, Server, Database,
-  Layout, Shield, Wifi, Command, X
+  Layout, Shield, Wifi, Command, X, Minus, Plus
 } from 'lucide-react'
 
 // --- Data & Content ---
@@ -537,9 +537,27 @@ Running: Linux 4.X`
         <div className="flex items-center justify-between px-4 py-3 bg-[#111] border-b border-gray-800 shrink-0 cursor-grab active:cursor-grabbing">
           <div className="flex items-center gap-2">
             <div className="flex gap-2 mr-4 group">
-              <button onClick={() => window.location.reload()} className="w-3 h-3 rounded-full bg-red-500/80 hover:bg-red-500 transition-colors" />
-              <button onClick={() => setIsMaximized(!isMaximized)} className="w-3 h-3 rounded-full bg-yellow-500/80 hover:bg-yellow-500 transition-colors" />
-              <button className="w-3 h-3 rounded-full bg-green-500/80 hover:bg-green-500 transition-colors" />
+              <button
+                onClick={() => window.location.reload()}
+                aria-label="Reload terminal"
+                className="w-3 h-3 rounded-full bg-red-500/80 hover:bg-red-500 transition-colors flex items-center justify-center"
+              >
+                <X size={8} className="text-black/70 opacity-0 group-hover:opacity-100 transition-opacity" strokeWidth={3} />
+              </button>
+              <button
+                onClick={() => setIsMaximized(false)}
+                aria-label="Minimize terminal"
+                className="w-3 h-3 rounded-full bg-yellow-500/80 hover:bg-yellow-500 transition-colors flex items-center justify-center"
+              >
+                <Minus size={8} className="text-black/70 opacity-0 group-hover:opacity-100 transition-opacity" strokeWidth={3} />
+              </button>
+              <button
+                onClick={() => setIsMaximized(true)}
+                aria-label="Maximize terminal"
+                className="w-3 h-3 rounded-full bg-green-500/80 hover:bg-green-500 transition-colors flex items-center justify-center"
+              >
+                <Plus size={8} className="text-black/70 opacity-0 group-hover:opacity-100 transition-opacity" strokeWidth={3} />
+              </button>
             </div>
             <div className="flex items-center text-xs md:text-sm text-gray-500 font-semibold gap-2">
               <Terminal size={14} className="text-green-500" />
@@ -547,7 +565,11 @@ Running: Linux 4.X`
               <span className="md:hidden">Terminal</span>
             </div>
           </div>
-          <button onClick={() => setIsMaximized(!isMaximized)} className="text-gray-500 hover:text-white transition-colors">
+          <button
+            onClick={() => setIsMaximized(!isMaximized)}
+            aria-label={isMaximized ? "Minimize terminal" : "Maximize terminal"}
+            className="text-gray-500 hover:text-white transition-colors"
+          >
             {isMaximized ? <Minimize2 size={16} /> : <Maximize2 size={16} />}
           </button>
         </div>
@@ -574,6 +596,7 @@ Running: Linux 4.X`
                 <div className="absolute left-4 top-1/2 -translate-y-1/2 text-green-500 animate-pulse">❯</div>
                 <input
                   type="text"
+                  aria-label="ProxAI Command Input"
                   value={proxAIInput}
                   onChange={(e) => setProxAIInput(e.target.value)}
                   className="w-full bg-black/50 border border-gray-700 rounded-lg py-3 pl-10 pr-12 text-green-400 placeholder-gray-600 focus:outline-none focus:border-green-500 focus:ring-1 focus:ring-green-500/50 transition-all font-mono"
