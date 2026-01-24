@@ -4,7 +4,7 @@ import {
   Github, Instagram, Facebook, ExternalLink, Copy, Check,
   Minimize2, Maximize2, Send, Bot, MapPin, Flag,
   Folder, FileText, Cpu, Globe, Server, Database,
-  Layout, Shield, Wifi, Command, X
+  Layout, Shield, Wifi, Command, X, Minus, Plus
 } from 'lucide-react'
 
 // --- Data & Content ---
@@ -537,9 +537,27 @@ Running: Linux 4.X`
         <div className="flex items-center justify-between px-4 py-3 bg-[#111] border-b border-gray-800 shrink-0 cursor-grab active:cursor-grabbing">
           <div className="flex items-center gap-2">
             <div className="flex gap-2 mr-4 group">
-              <button onClick={() => window.location.reload()} className="w-3 h-3 rounded-full bg-red-500/80 hover:bg-red-500 transition-colors" />
-              <button onClick={() => setIsMaximized(!isMaximized)} className="w-3 h-3 rounded-full bg-yellow-500/80 hover:bg-yellow-500 transition-colors" />
-              <button className="w-3 h-3 rounded-full bg-green-500/80 hover:bg-green-500 transition-colors" />
+              <button
+                onClick={() => window.location.reload()}
+                aria-label="Reload Terminal"
+                className="w-3 h-3 rounded-full bg-red-500/80 hover:bg-red-500 transition-colors flex items-center justify-center"
+              >
+                <X size={8} className="text-black/60 opacity-0 group-hover:opacity-100 transition-opacity" />
+              </button>
+              <button
+                onClick={() => setIsMaximized(false)}
+                aria-label="Minimize Terminal"
+                className="w-3 h-3 rounded-full bg-yellow-500/80 hover:bg-yellow-500 transition-colors flex items-center justify-center"
+              >
+                <Minus size={8} className="text-black/60 opacity-0 group-hover:opacity-100 transition-opacity" />
+              </button>
+              <button
+                onClick={() => setIsMaximized(true)}
+                aria-label="Maximize Terminal"
+                className="w-3 h-3 rounded-full bg-green-500/80 hover:bg-green-500 transition-colors flex items-center justify-center"
+              >
+                <Plus size={8} className="text-black/60 opacity-0 group-hover:opacity-100 transition-opacity" />
+              </button>
             </div>
             <div className="flex items-center text-xs md:text-sm text-gray-500 font-semibold gap-2">
               <Terminal size={14} className="text-green-500" />
