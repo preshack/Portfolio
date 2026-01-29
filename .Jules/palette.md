@@ -1,0 +1,3 @@
+## 2025-02-18 - Terminal Window Controls Accessibility
+**Learning:** Mimicking OS-level controls (Red/Yellow/Green buttons) in a web UI requires explicit accessibility considerations. Users expect these to behave like their native counterparts, but visually they are often just colored circles. Adding `aria-label`s and hover-reveal icons provides necessary context and feedback, transforming "mystery meat navigation" into a delightful, accessible interaction.
+**Action:** When implementing OS-style or icon-only controls, always include: 1) `aria-label` describing the action, 2) Visual feedback on hover (like icons appearing), and 3) Explicit behavior mapping (e.g., Yellow = Minimize, Green = Maximize) rather than ambiguous toggles.
