@@ -1,0 +1,3 @@
+## 2024-05-22 - Window Controls Accessibility
+**Learning:** Window control patterns (red/yellow/green dots) are often implemented as purely visual elements, lacking accessibility for screen readers and keyboard users. Additionally, strict type checking in `react-scripts` builds can conflict with `jest-dom` matchers like `toBeInTheDocument`, causing build failures despite passing tests.
+**Action:** Always implement window controls as accessible buttons with `aria-label`s and visible focus states. For tests in this environment, prefer standard assertions like `toBeTruthy()` over custom matchers to ensure build stability.
