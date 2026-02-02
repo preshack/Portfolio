@@ -4,7 +4,7 @@ import {
   Github, Instagram, Facebook, ExternalLink, Copy, Check,
   Minimize2, Maximize2, Send, Bot, MapPin, Flag,
   Folder, FileText, Cpu, Globe, Server, Database,
-  Layout, Shield, Wifi, Command, X
+  Layout, Shield, Wifi, Command, X, Minus, Plus
 } from 'lucide-react'
 
 // --- Data & Content ---
@@ -115,6 +115,7 @@ const ContactRow = ({ label, value, icon: Icon, href, copyable = false }: any) =
       {copyable ? (
         <button
           onClick={handleCopy}
+          aria-label="Copy to clipboard"
           className="p-2 text-gray-500 hover:text-green-400 transition-colors"
         >
           {copied ? <Check size={14} /> : <Copy size={14} />}
@@ -537,9 +538,27 @@ Running: Linux 4.X`
         <div className="flex items-center justify-between px-4 py-3 bg-[#111] border-b border-gray-800 shrink-0 cursor-grab active:cursor-grabbing">
           <div className="flex items-center gap-2">
             <div className="flex gap-2 mr-4 group">
-              <button onClick={() => window.location.reload()} className="w-3 h-3 rounded-full bg-red-500/80 hover:bg-red-500 transition-colors" />
-              <button onClick={() => setIsMaximized(!isMaximized)} className="w-3 h-3 rounded-full bg-yellow-500/80 hover:bg-yellow-500 transition-colors" />
-              <button className="w-3 h-3 rounded-full bg-green-500/80 hover:bg-green-500 transition-colors" />
+              <button
+                onClick={() => window.location.reload()}
+                aria-label="Reload terminal"
+                className="w-3 h-3 rounded-full bg-red-500/80 hover:bg-red-500 transition-colors flex items-center justify-center"
+              >
+                <X className="opacity-0 group-hover:opacity-100 w-2 h-2 text-black/50" />
+              </button>
+              <button
+                onClick={() => setIsMaximized(false)}
+                aria-label="Minimize terminal"
+                className="w-3 h-3 rounded-full bg-yellow-500/80 hover:bg-yellow-500 transition-colors flex items-center justify-center"
+              >
+                <Minus className="opacity-0 group-hover:opacity-100 w-2 h-2 text-black/50" />
+              </button>
+              <button
+                onClick={() => setIsMaximized(true)}
+                aria-label="Maximize terminal"
+                className="w-3 h-3 rounded-full bg-green-500/80 hover:bg-green-500 transition-colors flex items-center justify-center"
+              >
+                <Plus className="opacity-0 group-hover:opacity-100 w-2 h-2 text-black/50" />
+              </button>
             </div>
             <div className="flex items-center text-xs md:text-sm text-gray-500 font-semibold gap-2">
               <Terminal size={14} className="text-green-500" />
@@ -547,7 +566,11 @@ Running: Linux 4.X`
               <span className="md:hidden">Terminal</span>
             </div>
           </div>
-          <button onClick={() => setIsMaximized(!isMaximized)} className="text-gray-500 hover:text-white transition-colors">
+          <button
+            onClick={() => setIsMaximized(!isMaximized)}
+            aria-label="Toggle fullscreen"
+            className="text-gray-500 hover:text-white transition-colors"
+          >
             {isMaximized ? <Minimize2 size={16} /> : <Maximize2 size={16} />}
           </button>
         </div>
@@ -580,7 +603,11 @@ Running: Linux 4.X`
                   placeholder="Enter command or query..."
                   autoFocus
                 />
-                <button type="submit" className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-green-400 transition-colors">
+                <button
+                  type="submit"
+                  aria-label="Send command"
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-green-400 transition-colors"
+                >
                   <Send size={18} />
                 </button>
               </form>
@@ -605,12 +632,14 @@ Running: Linux 4.X`
                         setCopied(true);
                         setTimeout(() => setCopied(false), 2000);
                       }}
+                      aria-label="Copy code"
                       className="p-2 bg-gray-800 rounded hover:bg-gray-700 text-gray-400 hover:text-white transition-colors border border-gray-700"
                     >
                       {copied ? <Check size={16} className="text-green-500" /> : <Copy size={16} />}
                     </button>
                     <button
                       onClick={() => setSkillExample("")}
+                      aria-label="Close code snippet"
                       className="ml-2 p-2 bg-gray-800 rounded hover:bg-gray-700 text-gray-400 hover:text-white transition-colors border border-gray-700"
                     >
                       <X size={16} />
