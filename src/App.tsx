@@ -35,30 +35,121 @@ const linuxCommands: Record<string, () => string> = {
   "hostname": () => "hackbox"
 };
 
+// --- Simple RAG: chunk store + keyword retrieval ---
+const RAG_CHUNKS: Array<{ key: string; text: string }> = Object.entries(knowledgeBase).map(([key, text]) => ({ key, text }));
+
+function tokenize(s: string): string[] {
+  return s.toLowerCase().replace(/[^\w\s]/g, ' ').split(/\s+/).filter(Boolean);
+}
+
+function scoreChunk(queryWords: string[], chunk: { key: string; text: string }): number {
+  const keyLower = chunk.key.toLowerCase();
+  const textLower = chunk.text.toLowerCase();
+  let score = 0;
+  for (const w of queryWords) {
+    if (w.length < 2) continue;
+    if (keyLower.includes(w)) score += 3;
+    if (textLower.includes(w)) score += 1;
+  }
+  return score;
+}
+
+function ragRetrieve(query: string, topK = 3): Array<{ key: string; text: string }> {
+  const words = tokenize(query);
+  if (words.length === 0) return [];
+  const scored = RAG_CHUNKS.map(chunk => ({ chunk, score: scoreChunk(words, chunk) }))
+    .filter(x => x.score > 0)
+    .sort((a, b) => b.score - a.score);
+  return scored.slice(0, topK).map(x => x.chunk);
+}
+
+function toFirstPerson(text: string): string {
+  return text
+    .replace(/\bPreshak Bhattarai is\b/gi, "I'm")
+    .replace(/\bPreshak is\b/gi, "I'm")
+    .replace(/\bHe's\b/gi, "I'm")
+    .replace(/\bHe\b/g, "I")
+    .replace(/\bhis\b/gi, "my")
+    .replace(/\bhim\b/gi, "me")
+    .replace(/\bPreshak\b/g, "I")
+    .replace(/\bhe\b/g, "I")
+    .replace(/\bhimself\b/gi, "myself");
+}
+
+// Fix verb agreement after converting to first person (e.g. "I builds" -> "I build")
+function fixFirstPersonGrammar(text: string): string {
+  return text
+    .replace(/\bI builds\b/gi, "I build")
+    .replace(/\bI build\b/gi, "I build")
+    .replace(/\bI has\b/gi, "I have")
+    .replace(/\bI have\b/gi, "I have")
+    .replace(/\bI works\b/gi, "I work")
+    .replace(/\bI work\b/gi, "I work")
+    .replace(/\bI does\b/gi, "I do")
+    .replace(/\bI do\b/gi, "I do")
+    .replace(/\bI makes\b/gi, "I make")
+    .replace(/\bI make\b/gi, "I make")
+    .replace(/\bI is\b/gi, "I am")
+    .replace(/\bI am\b/gi, "I am")
+    .replace(/\bI was\b/gi, "I was")
+    .replace(/\bI were\b/gi, "I was")
+    .replace(/\bI had\b/gi, "I had")
+    .replace(/\bI experience\b/gi, "I have experience")
+    .replace(/\bI has experience\b/gi, "I have experience");
+}
+
+const CHATBOT_OPENERS = ["Sure! ", "Great question! ", "Here's what I can share: ", "I'd be happy to tell you — ", "Sure thing! ", ""];
+
+function ragAnswer(query: string): string {
+  const lower = query.toLowerCase().trim();
+
+  if (/^(hi|hey|hello|howdy|yo|sup|what'?s up)\s*!?\.?$/i.test(lower)) {
+    return "Hi! I'm Preshak. Ask me anything about my background — education, skills, projects, experience, or how to get in touch. What would you like to know?";
+  }
+  if (/^(thanks|thank you|ty|thx)/i.test(lower)) {
+    return "You're welcome! Anything else you'd like to know about me?";
+  }
+  if (/^(who are you|what is this|what can you do)/i.test(lower)) {
+    return "I'm a chatbot that answers questions about Preshak using only his resume. Ask me about his education, skills, projects, internships, contact info, or anything else on his profile.";
+  }
+  if (lower === 'help') {
+    return "I can answer questions about Preshak based on his resume. Try asking:\n\n• \"What's your education?\" or \"Where do you study?\"\n• \"What skills do you have?\" or \"Tell me about your projects\"\n• \"How can I contact you?\" or \"What's your email?\"\n• \"Tell me about your internship\" or \"Do you have certifications?\"\n\nJust ask in your own words!";
+  }
+  if (lower === 'clear') return "";
+
+  const exact = Object.entries(knowledgeBase).find(([k]) => lower.includes(k) || k.includes(lower));
+  if (exact) {
+    const friendly = fixFirstPersonGrammar(toFirstPerson(exact[1]));
+    return CHATBOT_OPENERS[Math.floor(Math.random() * CHATBOT_OPENERS.length)] + friendly;
+  }
+
+  const retrieved = ragRetrieve(query, 3);
+  if (retrieved.length === 0) {
+    return "I don't have that specific detail on my resume. You can ask about my education, skills, projects, internships, contact info, or leadership experience — I'm happy to share those!";
+  }
+
+  const combined = fixFirstPersonGrammar(retrieved.map(r => toFirstPerson(r.text)).join(" "));
+  return CHATBOT_OPENERS[Math.floor(Math.random() * CHATBOT_OPENERS.length)] + combined;
+}
+
 // --- Components ---
 
-const SkillCard = ({ name, icon: Icon, level, category, onClick }: any) => (
-  <button
-    onClick={onClick}
-    className="group relative bg-black/40 border border-green-500/20 p-4 rounded-lg hover:border-green-500 transition-all duration-300 hover:shadow-[0_0_20px_rgba(16,185,129,0.15)] text-left w-full overflow-hidden"
-  >
-    <div className="absolute top-0 right-0 p-2 opacity-10 group-hover:opacity-20 transition-opacity">
-      <Icon size={40} />
-    </div>
-    <div className="flex items-center gap-2 mb-2">
-      <Icon className="text-green-400 group-hover:text-green-300" size={18} />
-      <span className="font-bold text-gray-200 group-hover:text-white text-sm md:text-base">{name}</span>
-    </div>
-    <div className="text-xs text-gray-500 font-mono mb-2">{category}</div>
-    <div className="w-full bg-gray-800 h-1.5 rounded-full overflow-hidden">
-      <div
-        className="h-full bg-gradient-to-r from-green-600 to-green-400 group-hover:animate-pulse"
-        style={{ width: `${level}%` }}
-      />
-    </div>
-    <div className="mt-1 text-right text-[10px] text-green-500/70 font-mono">{level}% LOADED</div>
-  </button>
-);
+const SkillRow = ({ name, level, category, onClick }: { name: string; level: number; category: string; onClick: () => void }) => {
+  const barWidth = Math.round((level / 100) * 20);
+  const bar = '█'.repeat(barWidth) + '░'.repeat(20 - barWidth);
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      className="w-full flex items-center gap-2 md:gap-4 py-2 px-2 rounded border border-transparent hover:border-green-500/40 hover:bg-white/5 text-left font-mono text-sm group"
+    >
+      <span className="text-green-400 w-28 md:w-36 shrink-0 truncate">{name}</span>
+      <span className="text-gray-500 shrink-0 hidden sm:inline">{bar}</span>
+      <span className="text-green-500/80 w-10 shrink-0">{level}%</span>
+      <span className="text-gray-600 text-xs shrink-0">[{category}]</span>
+    </button>
+  );
+};
 
 const ProjectCard = ({ name, description, link, tech }: any) => (
   <a
@@ -138,7 +229,7 @@ export default function App() {
   const [copied, setCopied] = useState(false);
   const [proxAIInput, setProxAIInput] = useState("");
   const [proxAIHistory, setProxAIHistory] = useState<Array<{type: 'input' | 'output', text: string}>>([
-    { type: 'output', text: 'ProxAI Neural Interface v2.0.4 initialized...\nConnected to preshak@hackbox.\nAwaiting input.' }
+    { type: 'output', text: "Hi! I'm Preshak. I can answer questions about my background using my resume — education, skills, projects, experience, or contact. What would you like to know? (Type help for ideas.)" }
   ]);
   const terminalRef = useRef<HTMLDivElement>(null);
   const proxAIRef = useRef<HTMLDivElement>(null);
@@ -291,42 +382,28 @@ export default function App() {
       command: "./list_skills.sh --verbose",
       icon: <Cpu className="w-5 h-5" />,
       content: (
-        <div className="space-y-8 animate-fade-in">
-          <div>
-            <h3 className="text-sm font-mono text-gray-500 mb-3 uppercase tracking-wider flex items-center gap-2">
-              <Terminal size={14} /> Languages & Core
-            </h3>
-            <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
-              <SkillCard name="Python" level={90} icon={FileText} category="Scripting" onClick={() => document.dispatchEvent(new CustomEvent('showSkill', { detail: 'Python' }))} />
-              <SkillCard name="JavaScript" level={85} icon={Globe} category="Web" onClick={() => document.dispatchEvent(new CustomEvent('showSkill', { detail: 'JavaScript' }))} />
-              <SkillCard name="Java" level={78} icon={Cpu} category="Language" onClick={() => document.dispatchEvent(new CustomEvent('showSkill', { detail: 'Java' }))} />
-              <SkillCard name="SQL" level={82} icon={Database} category="Data" onClick={() => document.dispatchEvent(new CustomEvent('showSkill', { detail: 'SQL' }))} />
-              <SkillCard name="Bash" level={75} icon={Terminal} category="Shell" onClick={() => document.dispatchEvent(new CustomEvent('showSkill', { detail: 'Bash' }))} />
-              <SkillCard name="C++" level={75} icon={Cpu} category="System" onClick={() => document.dispatchEvent(new CustomEvent('showSkill', { detail: 'C++' }))} />
-              <SkillCard name="HTML/CSS" level={95} icon={Layout} category="Frontend" onClick={() => document.dispatchEvent(new CustomEvent('showSkill', { detail: 'HTML/CSS' }))} />
-            </div>
+        <div className="animate-fade-in font-mono">
+          <div className="text-gray-500 text-xs mb-4 border-b border-gray-800 pb-2"># Languages & Core</div>
+          <div className="space-y-0 divide-y divide-gray-800/80">
+            <SkillRow name="Python" level={90} category="Scripting" onClick={() => document.dispatchEvent(new CustomEvent('showSkill', { detail: 'Python' }))} />
+            <SkillRow name="JavaScript" level={85} category="Web" onClick={() => document.dispatchEvent(new CustomEvent('showSkill', { detail: 'JavaScript' }))} />
+            <SkillRow name="Java" level={78} category="Language" onClick={() => document.dispatchEvent(new CustomEvent('showSkill', { detail: 'Java' }))} />
+            <SkillRow name="SQL" level={82} category="Data" onClick={() => document.dispatchEvent(new CustomEvent('showSkill', { detail: 'SQL' }))} />
+            <SkillRow name="Bash" level={75} category="Shell" onClick={() => document.dispatchEvent(new CustomEvent('showSkill', { detail: 'Bash' }))} />
+            <SkillRow name="C++" level={75} category="System" onClick={() => document.dispatchEvent(new CustomEvent('showSkill', { detail: 'C++' }))} />
+            <SkillRow name="HTML/CSS" level={95} category="Frontend" onClick={() => document.dispatchEvent(new CustomEvent('showSkill', { detail: 'HTML/CSS' }))} />
           </div>
-
-          <div>
-            <h3 className="text-sm font-mono text-gray-500 mb-3 uppercase tracking-wider flex items-center gap-2">
-              <Shield size={14} /> Security Arsenal
-            </h3>
-            <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
-              <SkillCard name="Burp Suite" level={70} icon={Shield} category="Web Sec" onClick={() => document.dispatchEvent(new CustomEvent('showSkill', { detail: 'Burp Suite' }))} />
-              <SkillCard name="Wireshark" level={75} icon={Wifi} category="Network" onClick={() => document.dispatchEvent(new CustomEvent('showSkill', { detail: 'Wireshark' }))} />
-              <SkillCard name="Metasploit" level={65} icon={Terminal} category="Exploit" onClick={() => document.dispatchEvent(new CustomEvent('showSkill', { detail: 'Metasploit' }))} />
-              <SkillCard name="Nmap" level={80} icon={MapPin} category="Recon" onClick={() => document.dispatchEvent(new CustomEvent('showSkill', { detail: 'Nmap' }))} />
-            </div>
+          <div className="text-gray-500 text-xs mt-6 mb-4 border-b border-gray-800 pb-2"># Security Arsenal</div>
+          <div className="space-y-0 divide-y divide-gray-800/80">
+            <SkillRow name="Burp Suite" level={70} category="Web Sec" onClick={() => document.dispatchEvent(new CustomEvent('showSkill', { detail: 'Burp Suite' }))} />
+            <SkillRow name="Wireshark" level={75} category="Network" onClick={() => document.dispatchEvent(new CustomEvent('showSkill', { detail: 'Wireshark' }))} />
+            <SkillRow name="Metasploit" level={65} category="Exploit" onClick={() => document.dispatchEvent(new CustomEvent('showSkill', { detail: 'Metasploit' }))} />
+            <SkillRow name="Nmap" level={80} category="Recon" onClick={() => document.dispatchEvent(new CustomEvent('showSkill', { detail: 'Nmap' }))} />
           </div>
-
-          <div>
-            <h3 className="text-sm font-mono text-gray-500 mb-3 uppercase tracking-wider flex items-center gap-2">
-              <Database size={14} /> Frameworks & Tools
-            </h3>
-            <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
-              <SkillCard name="React" level={88} icon={Code} category="Library" onClick={() => document.dispatchEvent(new CustomEvent('showSkill', { detail: 'React' }))} />
-              <SkillCard name="Next.js" level={80} icon={Globe} category="Framework" onClick={() => document.dispatchEvent(new CustomEvent('showSkill', { detail: 'Next.js' }))} />
-            </div>
+          <div className="text-gray-500 text-xs mt-6 mb-4 border-b border-gray-800 pb-2"># Frameworks & Tools</div>
+          <div className="space-y-0 divide-y divide-gray-800/80">
+            <SkillRow name="React" level={88} category="Library" onClick={() => document.dispatchEvent(new CustomEvent('showSkill', { detail: 'React' }))} />
+            <SkillRow name="Next.js" level={80} category="Framework" onClick={() => document.dispatchEvent(new CustomEvent('showSkill', { detail: 'Next.js' }))} />
           </div>
         </div>
       )
@@ -428,42 +505,26 @@ export default function App() {
     if (!proxAIInput.trim()) return;
 
     const input = proxAIInput.trim();
-    // Use functional update to ensure we have the latest history if needed, though mostly okay here.
-    // However, the issue might be related to how newHistory was constructed or type inference.
-    // But the error log was about 'key' in the Dock map. Let's fix that first.
-
     const newHistory = [...proxAIHistory, { type: 'input' as const, text: input }];
-
-    let output = '';
-    const lowerInput = input.toLowerCase();
-
-    if (lowerInput === 'help') {
-      output = "Available commands: help, clear, whoami, skills, projects, contact, [question]";
-    } else if (lowerInput === 'clear') {
-      setProxAIHistory([]);
-      setProxAIInput('');
-      return;
-    } else if (linuxCommands[lowerInput]) {
-      output = linuxCommands[lowerInput]();
-    } else {
-      let found = false;
-      for (const [key, value] of Object.entries(knowledgeBase)) {
-        if (lowerInput.includes(key) || key.includes(lowerInput)) {
-          output = value;
-          found = true;
-          break;
-        }
-      }
-      if (!found) output = "Query not recognized. Access denied or data missing. Try 'help'.";
-    }
-
-    // Simulate network delay
-    setTimeout(() => {
-      setProxAIHistory(prev => [...prev, { type: 'output', text: output }]);
-    }, 300);
-
     setProxAIHistory(newHistory);
     setProxAIInput('');
+
+    const lowerInput = input.toLowerCase();
+    let output: string;
+
+    if (lowerInput === 'clear') {
+      setProxAIHistory([{ type: 'output', text: "Chat cleared. Hi again — I'm Preshak. Ask me anything about my background!" }]);
+      return;
+    }
+    if (linuxCommands[lowerInput]) {
+      output = linuxCommands[lowerInput]();
+    } else {
+      output = ragAnswer(input);
+    }
+
+    setTimeout(() => {
+      setProxAIHistory(prev => [...prev, { type: 'output', text: output }]);
+    }, 200);
   };
 
   // Event listener for skill clicks from the new SkillCards
@@ -594,78 +655,80 @@ done`
   }, [proxAIHistory]);
 
   return (
-    <div className="min-h-screen bg-[#0a0a0a] text-gray-200 font-mono flex flex-col items-center justify-center p-2 md:p-6 overflow-hidden relative selection:bg-green-500/30 selection:text-green-200">
-      {/* Background Grid */}
-      <div className="fixed inset-0 pointer-events-none z-0 opacity-20"
-           style={{
-             backgroundImage: 'linear-gradient(rgba(16, 185, 129, 0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(16, 185, 129, 0.1) 1px, transparent 1px)',
-             backgroundSize: '40px 40px'
-           }}>
-      </div>
+    <div className="min-h-screen bg-[#0a0a0a] text-[#c0c0c0] font-mono flex flex-col items-center justify-center p-2 md:p-6 overflow-hidden relative selection:bg-green-500/30 selection:text-green-200" style={{ fontFamily: "'JetBrains Mono', 'Fira Code', Consolas, monospace" }}>
+      {/* Background - terminal CRT feel */}
+      <div className="fixed inset-0 pointer-events-none z-0 bg-[#0a0a0a]" />
 
-      {/* Main Terminal Window */}
-      <div className={`relative z-10 w-full bg-[#0c0c0c]/90 backdrop-blur-xl border border-gray-800 rounded-xl overflow-hidden shadow-2xl transition-all duration-500 flex flex-col ${isMaximized ? 'h-[90vh] max-w-7xl' : 'h-[85vh] md:h-[700px] max-w-5xl'}`}>
+      {/* Main Terminal Window - xterm/gnome-terminal style */}
+      <div className={`relative z-10 w-full flex flex-col overflow-hidden rounded-sm transition-all duration-500 ${isMaximized ? 'h-[90vh] max-w-7xl' : 'h-[85vh] md:h-[700px] max-w-5xl'}`}
+           style={{ background: '#0d1117', border: '1px solid #30363d', boxShadow: '0 8px 32px rgba(0,0,0,0.5)' }}>
 
-        {/* Title Bar */}
-        <div className="flex items-center justify-between px-4 py-3 bg-[#111] border-b border-gray-800 shrink-0 cursor-grab active:cursor-grabbing">
+        {/* Title Bar - classic terminal */}
+        <div className="flex items-center justify-between px-3 py-2 shrink-0 border-b border-gray-800" style={{ background: '#161b22' }}>
           <div className="flex items-center gap-2">
-            <div className="flex gap-2 mr-4 group">
-              <button onClick={() => window.location.reload()} className="w-3 h-3 rounded-full bg-red-500/80 hover:bg-red-500 transition-colors" />
-              <button onClick={() => setIsMaximized(!isMaximized)} className="w-3 h-3 rounded-full bg-yellow-500/80 hover:bg-yellow-500 transition-colors" />
-              <button className="w-3 h-3 rounded-full bg-green-500/80 hover:bg-green-500 transition-colors" />
+            <div className="flex gap-1.5 mr-3">
+              <button onClick={() => window.location.reload()} className="w-2.5 h-2.5 rounded-sm hover:opacity-90" style={{ background: '#e51400' }} />
+              <button onClick={() => setIsMaximized(!isMaximized)} className="w-2.5 h-2.5 rounded-sm hover:opacity-90" style={{ background: '#e5a500' }} />
+              <button className="w-2.5 h-2.5 rounded-sm hover:opacity-90" style={{ background: '#339933' }} />
             </div>
-            <div className="flex items-center text-xs md:text-sm text-gray-500 font-semibold gap-2">
-              <Terminal size={14} className="text-green-500" />
-              <span className="hidden md:inline">preshak@hackbox: ~</span>
-              <span className="md:hidden">Terminal</span>
-            </div>
+            <span className="text-[11px] text-gray-500" style={{ fontFamily: "inherit" }}>preshak@hackbox — bash</span>
           </div>
-          <button onClick={() => setIsMaximized(!isMaximized)} className="text-gray-500 hover:text-white transition-colors">
-            {isMaximized ? <Minimize2 size={16} /> : <Maximize2 size={16} />}
+          <button onClick={() => setIsMaximized(!isMaximized)} className="text-gray-500 hover:text-gray-300 p-1">
+            {isMaximized ? <Minimize2 size={14} /> : <Maximize2 size={14} />}
           </button>
         </div>
 
-        {/* Content Area */}
-        <div ref={terminalRef} className="flex-1 overflow-y-auto p-4 md:p-8 custom-scrollbar scroll-smooth">
+        {/* Content Area - scrollbar hidden */}
+        <div ref={terminalRef} className="flex-1 overflow-y-auto overflow-x-hidden p-4 md:p-6 scrollbar-hide scroll-smooth" style={{ background: '#0d1117' }}>
           {currentSection === 'proxai' ? (
-            <div className="h-full flex flex-col">
-              <div className="flex-1 space-y-4 mb-4" ref={proxAIRef}>
+            <div className="h-full flex flex-col min-h-0">
+              <div className="flex-1 overflow-y-auto space-y-3 mb-4 scrollbar-hide" ref={proxAIRef}>
                 {proxAIHistory.map((entry, idx) => (
                   <div key={idx} className={`flex ${entry.type === 'input' ? 'justify-end' : 'justify-start'}`}>
-                    <div className={`max-w-[85%] rounded-lg p-3 ${
-                      entry.type === 'input'
-                        ? 'bg-green-500/10 border border-green-500/20 text-green-100 rounded-br-none'
-                        : 'bg-gray-800/50 border border-gray-700 text-gray-300 rounded-bl-none font-mono whitespace-pre-wrap'
-                    }`}>
-                      {entry.type === 'output' && <div className="text-[10px] text-green-500 mb-1 opacity-70">PROX_AI_CORE</div>}
-                      {entry.text}
+                    <div className={`max-w-[90%] ${entry.type === 'input' ? 'order-2' : ''}`}>
+                      {entry.type === 'output' && (
+                        <>
+                          <div className="text-[10px] text-green-500/90 font-mono mb-0.5">Preshak</div>
+                          <div className="font-mono text-sm whitespace-pre-wrap text-gray-300 bg-white/5 border border-white/10 rounded-lg px-3 py-2.5">
+                            {entry.text}
+                          </div>
+                        </>
+                      )}
+                      {entry.type === 'input' && (
+                        <div className="font-mono text-sm text-amber-200/90 bg-white/5 border border-amber-500/20 rounded-lg px-3 py-2.5 inline-block">
+                          {entry.text}
+                        </div>
+                      )}
                     </div>
                   </div>
                 ))}
               </div>
-              <form onSubmit={handleProxAISubmit} className="mt-auto relative">
-                <div className="absolute left-4 top-1/2 -translate-y-1/2 text-green-500 animate-pulse">❯</div>
+              <form onSubmit={handleProxAISubmit} className="mt-auto flex items-center gap-2 shrink-0 pt-2 border-t border-white/10">
+                <span className="text-amber-400/90 font-mono text-xs shrink-0">You</span>
                 <input
                   type="text"
                   value={proxAIInput}
                   onChange={(e) => setProxAIInput(e.target.value)}
-                  className="w-full bg-black/50 border border-gray-700 rounded-lg py-3 pl-10 pr-12 text-green-400 placeholder-gray-600 focus:outline-none focus:border-green-500 focus:ring-1 focus:ring-green-500/50 transition-all font-mono"
-                  placeholder="Enter command or query..."
+                  className="flex-1 bg-white/5 border border-white/10 rounded py-2 px-3 text-gray-200 placeholder-gray-500 focus:outline-none focus:border-green-500/50 font-mono text-sm"
+                  placeholder="Ask about education, skills, projects, contact..."
                   autoFocus
+                  spellCheck={false}
                 />
-                <button type="submit" className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-green-400 transition-colors">
+                <button type="submit" className="p-2 text-gray-500 hover:text-green-400 shrink-0 rounded hover:bg-white/5">
                   <Send size={18} />
                 </button>
               </form>
             </div>
           ) : (
             <>
-              {/* Command Prompt Line */}
-              <div className="flex items-center gap-2 mb-6 text-sm md:text-base font-mono opacity-80">
-                <span className="text-green-500 font-bold">➜</span>
+              {/* Command Prompt Line - bash style */}
+              <div className="flex items-center gap-1 mb-6 text-sm font-mono flex-wrap">
+                <span className="text-green-500">preshak@hackbox</span>
+                <span className="text-gray-500">:</span>
                 <span className="text-blue-400">~</span>
-                <span className="text-gray-400">$</span>
-                <span className="text-gray-200 typing-effect">{command}</span>
+                <span className="text-gray-500">$</span>
+                <span className="text-gray-300 typing-effect ml-1">{command}</span>
+                <span className="inline-block w-2 h-4 ml-0.5 bg-green-500 animate-pulse" style={{ animationDuration: '1s' }} />
               </div>
 
               {/* Dynamic Content */}

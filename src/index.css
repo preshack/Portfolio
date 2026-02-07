@@ -2,31 +2,38 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Custom Scrollbar */
-::-webkit-scrollbar {
-  width: 10px;
+/* Hide scrollbars but keep scroll behavior */
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
 }
 
-::-webkit-scrollbar-track {
-  background: #1f2937;
+/* Global hide (optional - applied to main content areas via class) */
+.overflow-y-auto.scrollbar-hide,
+.terminal-scroll {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.terminal-scroll::-webkit-scrollbar,
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
 }
 
-::-webkit-scrollbar-thumb {
-  background: #10b981;
-  border-radius: 5px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: #059669;
-}
-
-/* Cyber Grid Background */
+/* Terminal font stack */
 body {
-  background-color: #0f172a;
+  font-family: 'JetBrains Mono', 'Fira Code', 'Consolas', 'Monaco', 'Courier New', monospace;
+}
+
+/* Cyber Grid Background - subtle terminal feel */
+body {
+  background-color: #0a0a0a;
   background-image:
-    linear-gradient(rgba(16, 185, 129, 0.1) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(16, 185, 129, 0.1) 1px, transparent 1px);
-  background-size: 30px 30px;
+    linear-gradient(rgba(0, 255, 136, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 255, 136, 0.03) 1px, transparent 1px);
+  background-size: 20px 20px;
   background-position: center center;
 }
 
