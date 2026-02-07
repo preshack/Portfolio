@@ -3,8 +3,8 @@ import {
   Terminal, User, Home, Mail, Code, GraduationCap,
   Github, Instagram, Facebook, ExternalLink, Copy, Check,
   Minimize2, Maximize2, Send, Bot, MapPin, Flag,
-  Folder, FileText, Cpu, Globe, Server, Database,
-  Layout, Shield, Wifi, Command, X, Phone, Linkedin
+  Folder, Cpu, Server, Database,
+  Shield, Command, X, Phone, Linkedin
 } from 'lucide-react'
 
 // --- Data & Content ---
