@@ -4,21 +4,23 @@ import {
   Github, Instagram, Facebook, ExternalLink, Copy, Check,
   Minimize2, Maximize2, Send, Bot, MapPin, Flag,
   Folder, FileText, Cpu, Globe, Server, Database,
-  Layout, Shield, Wifi, Command, X
+  Layout, Shield, Wifi, Command, X, Phone, Linkedin
 } from 'lucide-react'
 
 // --- Data & Content ---
 
 const knowledgeBase: Record<string, string> = {
-  "who is preshak": "Preshak Bhattarai is a 19-year-old Computer Science student from Nepal, currently studying at the University of Wisconsin-Green Bay (UWGB), Class of 2029. He's passionate about cybersecurity and software development.",
-  "what does he do": "Preshak is a programming enthusiast and cybersecurity specialist. He works on various projects including PROXLOAD (file sharing platform), PROXEDU (educational platform), and custom Python modules. He's also skilled in penetration testing and security analysis.",
-  "education": "Preshak is pursuing a Bachelor of Science in Computer Science at the University of Wisconsin-Green Bay (UWGB), Class of 2029, with a focus on Cybersecurity and Software Development. He completed his Higher Secondary with Computer Science major and SEE in Nepal.",
-  "skills": "Preshak is proficient in Python (90%), JavaScript (85%), React (88%), C++ (75%), HTML/CSS (95%), Next.js (80%), and security tools like Burp Suite, Wireshark, Metasploit, and Nmap. He's also skilled in video editing.",
-  "contact": "You can reach Preshak at proxjodd@gmail.com or connect on GitHub (github.com/PROX-GOD), Instagram (@preshakdjodd), or Facebook (PreshakBhattarai).",
-  "projects": "Main projects include: PROXLOAD (web app for file uploading/downloading), PROXEDU (educational platform with handwritten notes), and a custom Python Module for productivity.",
-  "location": "Originally from Nepal, currently based in the USA, studying at University of Wisconsin-Green Bay.",
+  "who is preshak": "Preshak Bhattarai is a B.S. Computer Science student with a cybersecurity specialization at the University of Wisconsin-Green Bay (UWGB), Class of Dec 2029. Former Database Management Intern for a non-profit supporting 30,000+ users. From Nepal, now in Wisconsin, USA.",
+  "what does he do": "Preshak builds secure database systems and AI-powered applications. He has experience in database management, RBAC, secure data workflows, IT systems administration, and network security. He works with Python, APIs, and LLMs.",
+  "education": "B.S. Computer Science - Cyber Security at University of Wisconsin-Green Bay (UW-Green Bay), graduating Dec 2029. High school: Computer Science major in Nepal.",
+  "skills": "Languages: Python, Java, SQL, Bash. Cybersecurity: Network Security, Threat Detection, Incident Response, SOC Operations. Development: API Integration, AI/LLMs, GUI, Linux Administration. Cloud & Tools: AWS (Cloud Practitioner), Google Cloud, Git.",
+  "contact": "Email: preshak07@gmail.com | Phone: (920) 489-5575 | LinkedIn: linkedin.com/in/preshak-bhattarai | GitHub: github.com/PROX-GOD | Instagram: @preshakdjodd | Facebook: PreshakBhattarai.",
+  "projects": "MockDeu (AI Visa Interview Simulator — Python, LLMs, Speech-to-Text). FBPROX (Facebook Automation Tool — Python, GraphQL). PROXLOAD (secure file sharing). PROXEDU (educational platform). Python Modules (productivity scripts).",
+  "location": "Originally from Nepal; currently in Green Bay, Wisconsin, USA. Studying at UW-Green Bay.",
   "age": "19 years old",
-  "certifications": "Amazon AWS Certification and Google Hackathon Certification"
+  "certifications": "AWS Cloud Practitioner; Google Hackathon participant.",
+  "internship": "Database Management Intern (Aug 2024–Dec 2025): secure DB for international student records, SEVIS/visa docs, RBAC, automated data validation. Summer IT Intern at BKVM, Biratnagar, NP (Mar–May 2024): academic databases, IT security, SQL, school website.",
+  "leadership": "GDG (Google Developer Group) Member, Green Bay, WI — Sept 2025–Present. School Captain at BKVM, Biratnagar, NP — June–Dec 2023. Volunteer at Shree Pokhariya School — taught 100+ students Python and Java (June–Aug 2024)."
 };
 
 const linuxCommands: Record<string, () => string> = {
@@ -208,7 +210,7 @@ export default function App() {
               <Command size={20} /> Identity Verification
             </h3>
             <p className="text-gray-300 leading-relaxed">
-              I'm a 19-year-old Computer Science student at UWGB, originally from Nepal. My digital existence is defined by a relentless curiosity for how systems work—and how they can be broken. I bridge the gap between building secure software and testing its defenses.
+              B.S. Computer Science student with a cybersecurity specialization at UW-Green Bay. Former Database Management Intern for a non-profit platform supporting 30,000+ users—managing web infrastructure, databases, and secure data workflows. Background in IT systems administration and network security; experience building AI-powered applications using Python, APIs, and large language models.
             </p>
           </div>
 
@@ -220,8 +222,8 @@ export default function App() {
               <ul className="space-y-4 text-sm">
                 <li className="relative pl-4 border-l-2 border-blue-500/30">
                   <div className="font-bold text-gray-200">University of Wisconsin-Green Bay</div>
-                  <div className="text-gray-400">B.S. Computer Science</div>
-                  <div className="text-xs text-blue-400/80 mt-1">Class of 2029 • Current</div>
+                  <div className="text-gray-400">B.S. Computer Science — Cyber Security</div>
+                  <div className="text-xs text-blue-400/80 mt-1">Dec 2029 • Current</div>
                 </li>
                 <li className="relative pl-4 border-l-2 border-gray-700">
                   <div className="font-bold text-gray-200">High School</div>
@@ -253,6 +255,35 @@ export default function App() {
               </div>
             </div>
           </div>
+
+          <div className="bg-black/20 border border-gray-800 rounded-lg p-5">
+            <h4 className="text-lg font-semibold text-green-400 mb-3 flex items-center gap-2">
+              <Database size={18} /> Internship Experience
+            </h4>
+            <ul className="space-y-4 text-sm">
+              <li className="relative pl-4 border-l-2 border-green-500/30">
+                <div className="font-bold text-gray-200">Database Management Intern</div>
+                <div className="text-gray-400">Non-profit (30,000+ users) | Remote | Aug 2024 – Dec 2025</div>
+                <div className="text-xs text-gray-500 mt-1">Secure DB for international student records (SEVIS, visa docs); RBAC; automated data validation; security compliance.</div>
+              </li>
+              <li className="relative pl-4 border-l-2 border-gray-700">
+                <div className="font-bold text-gray-200">Summer IT Intern</div>
+                <div className="text-gray-400">BKVM | Biratnagar, NP | Mar – May 2024</div>
+                <div className="text-xs text-gray-500 mt-1">Academic databases, IT security, SQL; school website (HTML, CSS, JavaScript); classroom tech deployment.</div>
+              </li>
+            </ul>
+          </div>
+
+          <div className="bg-black/20 border border-gray-800 rounded-lg p-5">
+            <h4 className="text-lg font-semibold text-blue-400 mb-3 flex items-center gap-2">
+              <Terminal size={18} /> Leadership & Volunteer
+            </h4>
+            <ul className="space-y-3 text-sm">
+              <li><span className="font-bold text-gray-200">GDG Member</span> — Google Developer Group, Green Bay, WI | Sept 2025 – Present</li>
+              <li><span className="font-bold text-gray-200">School Captain</span> — BKVM, Biratnagar, NP | June – Dec 2023</li>
+              <li><span className="font-bold text-gray-200">Volunteer</span> — Shree Pokhariya School, Biratnagar | June – Aug 2024 (taught 100+ students Python & Java)</li>
+            </ul>
+          </div>
         </div>
       )
     },
@@ -268,6 +299,9 @@ export default function App() {
             <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
               <SkillCard name="Python" level={90} icon={FileText} category="Scripting" onClick={() => document.dispatchEvent(new CustomEvent('showSkill', { detail: 'Python' }))} />
               <SkillCard name="JavaScript" level={85} icon={Globe} category="Web" onClick={() => document.dispatchEvent(new CustomEvent('showSkill', { detail: 'JavaScript' }))} />
+              <SkillCard name="Java" level={78} icon={Cpu} category="Language" onClick={() => document.dispatchEvent(new CustomEvent('showSkill', { detail: 'Java' }))} />
+              <SkillCard name="SQL" level={82} icon={Database} category="Data" onClick={() => document.dispatchEvent(new CustomEvent('showSkill', { detail: 'SQL' }))} />
+              <SkillCard name="Bash" level={75} icon={Terminal} category="Shell" onClick={() => document.dispatchEvent(new CustomEvent('showSkill', { detail: 'Bash' }))} />
               <SkillCard name="C++" level={75} icon={Cpu} category="System" onClick={() => document.dispatchEvent(new CustomEvent('showSkill', { detail: 'C++' }))} />
               <SkillCard name="HTML/CSS" level={95} icon={Layout} category="Frontend" onClick={() => document.dispatchEvent(new CustomEvent('showSkill', { detail: 'HTML/CSS' }))} />
             </div>
@@ -303,6 +337,18 @@ export default function App() {
       content: (
         <div className="animate-fade-in">
           <div className="grid md:grid-cols-2 gap-4">
+            <ProjectCard
+              name="MockDeu — AI Visa Interview Simulator"
+              description="AI-driven visa interview simulator using LLMs for dynamic questions and realistic scenarios. Speech-to-text and text-to-speech for real-time voice interaction; automated feedback and performance insights."
+              link="https://github.com/PROX-GOD"
+              tech={['Python', 'LLMs', 'Speech-to-Text']}
+            />
+            <ProjectCard
+              name="FBPROX — Facebook Automation Tool"
+              description="Modular Python automation tool leveraging GraphQL APIs for workflow automation. Secure authentication and scalable architecture for multi-task automation."
+              link="https://github.com/PROX-GOD"
+              tech={['Python', 'GraphQL', 'Automation']}
+            />
             <ProjectCard
               name="PROXLOAD"
               description="Secure file sharing platform enabling seamless encrypted transfers across devices."
@@ -341,7 +387,9 @@ export default function App() {
             </div>
 
             <div className="space-y-3">
-              <ContactRow label="Email Protocol" value="proxjodd@gmail.com" icon={Mail} href="mailto:proxjodd@gmail.com" copyable />
+              <ContactRow label="Email Protocol" value="preshak07@gmail.com" icon={Mail} href="mailto:preshak07@gmail.com" copyable />
+              <ContactRow label="Phone" value="(920) 489-5575" icon={Phone} href="tel:+19204895575" copyable />
+              <ContactRow label="LinkedIn" value="linkedin.com/in/preshak-bhattarai" icon={Linkedin} href="https://linkedin.com/in/preshak-bhattarai" />
               <ContactRow label="GitHub Repository" value="github.com/PROX-GOD" icon={Github} href="https://github.com/PROX-GOD" />
               <ContactRow label="Instagram Feed" value="@preshakdjodd" icon={Instagram} href="https://instagram.com/preshakdjodd" />
               <ContactRow label="Facebook Net" value="PreshakBhattarai" icon={Facebook} href="https://facebook.com/PreshakBhattarai" />
@@ -500,7 +548,32 @@ PORT     STATE SERVICE       VERSION
 22/tcp   open  ssh           OpenSSH 7.6p1
 80/tcp   open  http          Apache httpd 2.4.29
 Device type: general purpose
-Running: Linux 4.X`
+Running: Linux 4.X`,
+         'Java': `public class SecureConnection {
+  public static void main(String[] args) {
+    try (Connection conn = DriverManager.getConnection(url, user, pass)) {
+      PreparedStatement stmt = conn.prepareStatement("SELECT * FROM users WHERE id = ?");
+      stmt.setInt(1, userId);
+      ResultSet rs = stmt.executeQuery();
+    }
+  }
+}`,
+         'SQL': `-- RBAC: role-based access control
+CREATE ROLE student_access;
+GRANT SELECT ON student_records TO student_access;
+REVOKE DELETE ON confidential_data FROM public;
+
+-- Secure data validation
+SELECT * FROM sevis_docs WHERE status = 'verified' AND expiry_date > CURRENT_DATE;`,
+         'Bash': `#!/bin/bash
+# Automated validation pipeline
+for f in "\${DATA_DIR}"/*.csv; do
+  if validate_sevis "$f"; then
+    import_to_db "$f"
+  else
+    log_error "Validation failed: $f"
+  fi
+done`
       };
 
       if (examples[skillName]) {
